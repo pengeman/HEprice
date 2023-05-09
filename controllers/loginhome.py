@@ -1,10 +1,11 @@
-from flask import Flask, redirect
+from flask import Flask, redirect,Blueprint
 
 app = Flask(__name__)
-
+login = Blueprint('login', __name__)
 
 # 显示登陆页面
-@app.round('/login')
+@login.route('/loginshow')
 def login():
-    return redirect("login.html")
+    print("kjhgf")
+    return redirect("mnmh")
 
