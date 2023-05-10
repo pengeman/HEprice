@@ -1,33 +1,68 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
 
 from controllers.loginhome import login
 from service.login import login_check
-
+import logging.handlers
 
 def create_app():
     app = Flask(__name__, template_folder='./templates', static_folder='./static')
     #app.config.from_object(settings)
     #app.register_blueprint(login)
+    setLogging()
     return app
 
 
+loginhomepage = "loginhome/login.html"
+workhomepage = "HEcalculate/HEhome.html"
 app = create_app()
-
 
 
 @app.route('/')
 def home():  # put application's code here
-    return render_template("loginhome/login.html",title='kdkd')
+    return render_template(loginhomepage, title='kdkd')
 
 
 @app.route('/login',methods=['POST'])
 def login():
-    login_check()
+    isok = 0
+    if request.method == 'POST':  # 请求方式是post
+        message = "用户名和密码错误"
+        user = request.args.get('username')  # args取get方式参数
+        pwd = request.args.get('password')
+        ## 验证用户名和密码
+        isok = login_check(user,pwd)
+        if isok:
+            return render_template(workhomepage)
+        else:
+            return render_template(loginhomepage, message = message)
+    else:
+        return render_template(loginhomepage);
+
+
 
 @app.route('/index')
 def index():
     print("index......")
-    return redirect("/vccvvc")
+    return redirect("/")
+
+def setLogging():
+    LOG_FORMAT = "%(asctime)s - [%(levelname)s] - %(message)s"
+    # logging.basicConfig(filename="test.log", level=logging.DEBUG, format=LOG_FORMAT)
+    logger = logging.getLogger("my_loger")
+    logger.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    log_format = logging.Formatter(LOG_FORMAT)
+
+    console_handler.setFormatter(log_format)
+
+    file_handler = logging.FileHandler("my_test.log", encoding="utf-8")
+
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+    #logger.debug("this is debug log")
+    #logger.info("this is info log")
 
 
 

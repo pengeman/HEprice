@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"/>
     <meta charset="UTF-8">
     <title>{{title}}</title>
 </head>
 <body>
 <label>换热器型号：
-    <input  id="typetext" type="text" name="s">
+    <input id="typetext" name="s" type="text">
     <button onclick="doprice">报价</button>
 </body>
 </html>
 <script type="text/javascript">
-    function doprice(){
+    function doprice() {
         var ttext = document.getElementById("typetext").value;
+        $.get("calculateHE",{
+        name:"菜鸟教程",
+        url:"http://www.runoob.com"
+    },function (data){});
     }
 
 </script>
