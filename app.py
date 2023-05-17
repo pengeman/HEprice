@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request
 
 from controllers.loginhome import login
+from service.HEcompute import calHE
 from service.login import login_check
 import logging.handlers
 
@@ -45,6 +46,10 @@ def index():
     print("index......")
     return redirect("/")
 
+
+
+
+
 @app.route('/calculateHE',methods=['POST'])
 def calculateHE(HEtype):  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-0.16Mpa-密封垫片-接管方式)
     HEprice_values = {
@@ -53,7 +58,7 @@ def calculateHE(HEtype):  # 计算换热器单价(换热器型号BP200mhv-300-30
         'price_80' : 'xx',
         'price_70' : 'xx'
     }
-    calHE()
+    calHE(HEtype) # 计算单价
 
 
 def setLogging():
