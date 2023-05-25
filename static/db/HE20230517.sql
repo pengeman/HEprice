@@ -1,3 +1,4 @@
+/*已经有sheet表了，其他表应该引用sheet中的id*/
 
 DROP TABLE IF EXISTS `t_s_version`;
 SET @saved_cs_client     = @@character_set_client;
@@ -359,10 +360,10 @@ UNLOCK TABLES;
 -- Table structure for table `u_sheetarear`
 --
 
-DROP TABLE IF EXISTS `u_sheetarear`;
+DROP TABLE IF EXISTS `u_sheetarea`;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-CREATE TABLE `u_sheetarear` (
+CREATE TABLE `u_sheetarea` (
   `id` int(11) NOT NULL auto_increment COMMENT '单板面积',
   `sheet` char(16) default NULL COMMENT '板片型号',
   `arear` double(16,4) default NULL COMMENT '面积',
@@ -374,7 +375,7 @@ SET character_set_client = @saved_cs_client;
 -- Dumping data for table `u_sheetarear`
 --
 
-LOCK TABLES `u_sheetarear` WRITE;
+LOCK TABLES `u_sheetarea` WRITE;
 /*!40000 ALTER TABLE `u_sheetarear` DISABLE KEYS */;
 INSERT INTO `u_sheetarear` VALUES (1,'BP50',0.1400),(2,'BP100',0.2400),(3,'BP32',0.0140),(4,'BP150',0.6200),(5,'BP200',0.8500);
 /*!40000 ALTER TABLE `u_sheetarear` ENABLE KEYS */;
@@ -408,7 +409,7 @@ LOCK TABLES `u_splint` WRITE;
 /*!40000 ALTER TABLE `u_splint` DISABLE KEYS */;
 INSERT INTO `u_splint` VALUES (1,'BP32','16',1,50,'304','650.00',NULL),
 (2,'BP50','16',1,50,'304','1800.00',NULL),
-(3,'BP50','16',50,100,'304','304','1950.00',NULL),
+(3,'BP50','16',50,100,'304','1950.00',NULL),
 (4,'BP50','16',100,150,'304','2100.00',NULL),
 (5,'BP50','16',150,200,'304','2250.00',NULL),
 (6,'BP100','16',100,150,'304','3600.00',NULL),
