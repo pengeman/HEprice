@@ -9,7 +9,7 @@
 <div class="container">
         <div class="form-box">
             <!-- 注册 -->
-		<form action="" method="post" class="register-box hidden">
+		<form action="/register" method="post" class="register-box hidden">
 			<h1>register</h1>
 			<input type="text" placeholder="用户名" name="username">
 			<input type="email" placeholder="邮箱" name="email">
@@ -18,7 +18,7 @@
 			<input type="submit" name="" class="but" value="注册" />
 		</form>
 		<!-- 登录 -->
-            <form action="/login" method="post" class="login-box">
+            <form action="/login2" method="post" class="login-box">
             	<h1>login</h1>
             	<input type="text" placeholder="用户名" name="username">
             	<input type="password" placeholder="密码" name="password">
@@ -204,7 +204,7 @@
 
 <script type="text/javascript">
     // 要操作到的元素
-        let login=document.getElementById('login');
+        let login=document.getElementById('login22');
         let register=document.getElementById('register');
         let form_box=document.getElementsByClassName('form-box')[0];
         let register_box=document.getElementsByClassName('register-box')[0];

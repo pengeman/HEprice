@@ -46,6 +46,7 @@ def home():  # put application's code here
 @app.route('/login',methods=['POST'])
 def login():
     isok = 0
+    print("login...............")
     if request.method == 'POST':  # 请求方式是post
         message = "用户名和密码错误"
         user = request.args.get('username')  # args取get方式参数
@@ -53,13 +54,16 @@ def login():
         ## 验证用户名和密码
         isok = login_check(user,pwd)
         if isok:
+            print("isok : " + str(isok))
             return render_template(workhomepage)
         else:
-            return render_template(loginhomepage, message = message)
+            return render_template(loginhomepage, message=message)
     else:
         return render_template(loginhomepage);
 
-
+@app.route("/login2",methods=['POST'])
+def login2():
+    return render_template("HEcalculate/HEhome.html")
 
 @app.route('/index')
 def index():
