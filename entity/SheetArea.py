@@ -4,6 +4,6 @@ class SheetArea(object):
     area = 0
 
     def __init__(self):
-        id = 0
-        sheet = ""
-        area = 0
+        self.id = 0
+        self.sheet = ""
+        self.area = 0

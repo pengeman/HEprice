@@ -5,6 +5,26 @@ from service.HEcompute import calHE
 from service.login import login_check
 import logging.handlers
 
+def setLogging():
+    LOG_FORMAT = "%(asctime)s - [%(levelname)s] - %(message)s"
+    # logging.basicConfig(filename="test.log", level=logging.DEBUG, format=LOG_FORMAT)
+    logger = logging.getLogger("my_loger")
+    logger.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    log_format = logging.Formatter(LOG_FORMAT)
+
+    console_handler.setFormatter(log_format)
+
+    file_handler = logging.FileHandler("my_test.log", encoding="utf-8")
+
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+    #logger.debug("this is debug log")
+    #logger.info("this is info log")
+
+
 def create_app():
     app = Flask(__name__, template_folder='./templates', static_folder='./static')
     #app.config.from_object(settings)
@@ -61,24 +81,6 @@ def calculateHE(HEtype):  # 计算换热器单价(换热器型号BP200mhv-300-30
     calHE(HEtype) # 计算单价
 
 
-def setLogging():
-    LOG_FORMAT = "%(asctime)s - [%(levelname)s] - %(message)s"
-    # logging.basicConfig(filename="test.log", level=logging.DEBUG, format=LOG_FORMAT)
-    logger = logging.getLogger("my_loger")
-    logger.setLevel(logging.DEBUG)
-
-    console_handler = logging.StreamHandler()
-    log_format = logging.Formatter(LOG_FORMAT)
-
-    console_handler.setFormatter(log_format)
-
-    file_handler = logging.FileHandler("my_test.log", encoding="utf-8")
-
-    logger.addHandler(console_handler)
-    logger.addHandler(file_handler)
-
-    #logger.debug("this is debug log")
-    #logger.info("this is info log")
 
 
 

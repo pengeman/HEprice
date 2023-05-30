@@ -1,5 +1,5 @@
 import logging
-
+## 获得换热器各部件的信息，如果是单条记录返回entity,如果是多条记录，返回list(entity)
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
@@ -7,6 +7,8 @@ from sqlalchemy import text
 from entity.Sheet import Sheet
 from entity.SheetArea import SheetArea
 from entity.Splint import Splint
+from entity.Texture import Texture
+from entity.Thinkness import Thinkness
 
 app = Flask(__name__)
 
@@ -138,10 +140,56 @@ def getSheetAreaByType(type):
         return msg
 
 # 获得材质数据all
+def getTextureAll():
+    sql = text("select id,texture,about from u_texture")
+    texture_ls = list()
+    #tls = list()
+    with app.app_context():
+        tls = db.session.execute(sql)
+        for texture in tls:
+            texture_entity = Texture()
+            texture_entity.id = texture[0]
+            texture_entity.texture = texture[1]
+            texture_entity.about = texture[2]
+            texture_ls.append(texture_entity)
+    return texture_ls
+
 
 # 获得板片厚度数据all
+def getThinknessAll():
+    sql = text("select id,thinkness,about from u_thinkness")
+    thinkness_ls = list()
+    with app.app_context():
+        r = db.session.execute(sql)
+        for thinkness in r:
+            thinkness_entity = Thinkness()
+            thinkness_entity.id = thinkness[0]
+            thinkness_entity.thinkness = thinkness[1]
+            thinkness_entity.about = thinkness[2]
+            thinkness_ls.append(thinkness_entity)
+    return thinkness_ls
 
 # 获得接管数据all
+
+# 获得板型价格all
+
+# 获得板型价格by板型
+
+# 获得法兰数据all（T20592-09化工）
+
+# 获得法兰数据（T20592-09化工）by 型号，规格，材质
+
+# 获得法兰数据all（T81-94国标）
+
+# 获得法兰数据（T81-94国标）by 型号，规格，材质
+
+# 获得包装数据all
+
+# 获得包装数据by型号，面积
+
+# 获得地托数据all
+
+# 获得底托数据by型号
 
 
 if __name__ == '__main__':
@@ -166,6 +214,10 @@ if __name__ == '__main__':
     # if isinstance(splints,str):
     #     print(splints)
     ######################################
-    area_ls = getSheetAreaAll()
-    for area_entity in area_ls:
-        print(area_entity.sheet + " - " + str(area_entity.area))
+    # area_ls = getSheetAreaAll()
+    # for area_entity in area_ls:
+    #     print(area_entity.sheet + " - " + str(area_entity.area))
+    ################################
+    texture_ls = getTextureAll()
+    for texture in texture_ls:
+        print(str(texture.id) + " - " + texture.texture + " - " + str(texture.about))
