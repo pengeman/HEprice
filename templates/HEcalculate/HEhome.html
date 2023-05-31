@@ -1,25 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"/>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="UTF-8">
-    <title>h</title>
+    <title>{{title}}</title>
+    <style>
+        textarea {
+            width: 60%;
+            resize: horizontal;
+        }
+        select {
+            width: 15%;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<h1>saldkjflaskdjflaskdjflaskjd</h1>asdlkfjalsdkfjlaskdjflaksdjflkajsf
-<label>换热器型号：
-    <input id="typetext" name="s" type="text">
-    <button onclick="doprice">报价</button>
-</label>
+    <textarea rows="2"></textarea>
+    <br>
+    <select>
+        <option>选项1</option>
+        <option>选项2</option>
+        <option>选项3</option>
+        <option>选项4</option>
+    </select>
+    <select>
+        <option>选项1</option>
+        <option>选项2</option>
+        <option>选项3</option>
+        <option>选项4</option>
+    </select>
+    <select>
+        <option>选项1</option>
+        <option>选项2</option>
+        <option>选项3</option>
+        <option>选项4</option>
+    </select>
+    <select>
+        <option>选项1</option>
+        <option>选项2</option>
+        <option>选项3</option>
+        <option>选项4</option>
+    </select>
+    <br>
+    <button>计算价格</button>
 </body>
 </html>
-<script type="text/javascript">
-    function doprice() {
-        var ttext = document.getElementById("typetext").value;
-        $.get("calculateHE",{
-        name:"菜鸟教程",
-        url:"http://www.runoob.com"
-    },function (data){});
-    }
-
-</script>

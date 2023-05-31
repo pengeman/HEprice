@@ -18,8 +18,10 @@
 			<input type="submit" name="" class="but" value="注册" />
 		</form>
 		<!-- 登录 -->
-            <form action="/login2" method="post" class="login-box">
+
+            <form action="/login" method="post" class="login-box">
             	<h1>login</h1>
+                <h3><label>{{error}}</label></h3>
             	<input type="text" placeholder="用户名" name="username">
             	<input type="password" placeholder="密码" name="password">
             	<input type="submit" name="" class="but" value="登录" />

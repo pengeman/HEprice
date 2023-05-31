@@ -4,6 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
+from DAO.DB import createDB
 from entity.Sheet import Sheet
 from entity.SheetArea import SheetArea
 from entity.Splint import Splint
@@ -12,10 +13,13 @@ from entity.Thinkness import Thinkness
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://peng:sa@127.0.0.1:3306/heat_exchanger'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
-db = SQLAlchemy(app)
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://peng:sa@127.0.0.1:3306/heat_exchanger'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_ECHO'] = True
+# db = SQLAlchemy(app)
+
+db = createDB(app)
+
 # 获得所有板型数据
 def getSheetall():
     sheet_ls = list()

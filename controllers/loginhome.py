@@ -4,7 +4,7 @@ app = Flask(__name__)
 login = Blueprint('login', __name__)
 
 # 显示登陆页面
-@login.route('/loginshow')
+@login.route('/login')
 def login():
     print("kjhgf")
     return redirect("mnmh")
