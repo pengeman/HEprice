@@ -4,6 +4,26 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="UTF-8">
     <title>{{title}}</title>
+    <script>
+        $(document).ready(function() {
+            // 当页面加载完成时执行以下代码
+
+            // 选取按钮，并为其添加单击事件处理程序
+            $('#b_comp').click(function() {
+                // 单击事件发生时执行的代码
+                alert(" 发送GET请求！");
+                // 发送GET请求
+                $.get('/api/data',{k:v}, function(response) {
+                    // 请求成功时的回调函数
+                    alert("请求成功！响应数据：" + response);
+                }).fail(function() {
+                    // 请求失败时的回调函数
+                    alert("请求失败！");
+                });
+            });
+
+        });
+    </script>
     <style>
         textarea {
             width: 60%;
@@ -45,6 +65,6 @@
         <option>选项4</option>
     </select>
     <br>
-    <button>计算价格</button>
+    <button id="b_comp">计算价格</button>
 </body>
 </html>

@@ -73,13 +73,15 @@ def index():
 
 @app.route('/calculateHE',methods=['POST'])
 def calculateHE(HEtype):  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-0.16Mpa-密封垫片-接管方式)
-    HEprice_values = {
-        'price_guide' : 'xx',
-        'price_90' : 'xx',
-        'price_80' : 'xx',
-        'price_70' : 'xx'
-    }
-    calHE(HEtype) # 计算单价
+    if request.method == "GET":
+        HEtype = request.args.get("HEtype");
+        HEprice_values = {
+            'price_guide' : 'xx',
+            'price_90' : 'xx',
+            'price_80' : 'xx',
+            'price_70' : 'xx'
+        }
+        calHE(HEtype) # 计算单价
 
 
 

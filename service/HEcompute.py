@@ -21,6 +21,12 @@ HEpara = HEparament();
 
 ''' 
 换热器型号BP200mhv-300-304-0.5-0.16Mpa-密封垫片-衬套材质-接管方式-1/2化工标准/供热标准
+return : HEprice_values = {
+            'price_guide' : 'xx',
+            'price_90' : 'xx',
+            'price_80' : 'xx',
+            'price_70' : 'xx'
+        }
 '''
 def calHE(HEtype):
     HEpara = parse2(HEtype)
@@ -53,6 +59,10 @@ def parse(HEtype):
     paramert["standard"] = HEparemets[8]
     return paramert
 
+'''
+解析板换型号，如果解析失败，返回None
+使用类记录板型参数信息
+'''
 def parse2(HEtype):
     HEparemets = HEtype.split("-")  # 将板型数据分割成参数数组
     _HEparament = HEparament()
