@@ -10,12 +10,13 @@
 
             // 选取按钮，并为其添加单击事件处理程序
             $('#b_comp').click(function() {
+                hetype = $('#HEtype').val()
                 // 单击事件发生时执行的代码
-                alert(" 发送GET请求！");
-                // 发送GET请求
-                $.get('/api/data',{k:v}, function(response) {
+                console.log(hetype)
+                // 发送POST请求
+                $.post('/calculateHE',{ht:hetype}, function(response) {
                     // 请求成功时的回调函数
-                    alert("请求成功！响应数据：" + response);
+                    console.log("请求成功！响应数据：" + response);
                 }).fail(function() {
                     // 请求失败时的回调函数
                     alert("请求失败！");
@@ -38,7 +39,7 @@
     </style>
 </head>
 <body>
-    <textarea rows="2"></textarea>
+    <textarea id="HEtype" rows="2"></textarea>
     <br>
     <select>
         <option>选项1</option>
