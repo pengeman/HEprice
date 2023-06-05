@@ -43,7 +43,8 @@ def calHE(HEtype):
     price_splint = calHE_splint(HEpara.sheet, HEpara.area, HEpara.pressure, HEpara.lining)
     price_flange = calHE_flange(HEpara.sheet, HEpara.standard, HEpara.lining)
     price_package = calHE_package(HEpara.sheet,HEpara.area)
-    pass
+    price_collet = calHE_collet(HEpara.sheet , HEpara.area)
+    price = price_sheet + price_splint + price_flange + price_package + price_collet
 
 
 def parse(HEtype):
