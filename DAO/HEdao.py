@@ -58,10 +58,22 @@ def getSheetByType(type):
             return msg
 
 
+# 得到板型单价
+# 参数： 板型，材质， 厚度
+# BP100B, 304, 0,5
+def getPriceByType(sheet,texture, thinkness):
+    with app.app_context():
+        sql = text("select sheet_id , texture_id , thinkness_id, price , b.type, c.texture, d.thinkness "
+                   "from u_price a inner join  u_sheet b on a.sheet_id = b.id inner join u_texture c on a.texture_id = c.id inner join  u_thinkness d on a.thinkness_id = d.id "
+                   "where b.type = %s and c.texture = %s and d.thinkness = %s")
+        params = (sheet, texture, thinkness)
+        sheets = db.session.execute(sql, params)
+        sheet_ls = sheets.fetchone()
+        return sheet_ls[3]
 
 
 # 获得夹板数据all select id,type,pressure,classmin,classmax lining price , pic from u_splint
-def getSplingAll():
+def getSplintAll():
     with app.app_context():
         splint_ls = list()
         sql = text ("select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint")
