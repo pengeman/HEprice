@@ -110,13 +110,17 @@ def calHE_sheet(sheet, texture, thinkness):
 # pressure : 16 , 压力
 # lining: 304 内衬
 def calHE_splint(sheet, area, pressure, lining):
+    area_entity = HEdao.getSheetAreaByType(sheet)
+    sheetarea = area_entity.area
+    classnum = int(sheetarea / area)
+    splint_entity = HEdao.getSplingbyType(sheet, pressure, classnum, lining)
+    return splint_entity.price
 
-    HEdao.getSplingbyType(sheet, pressure, classnum, lining)
-    pass
 
 
 # 计算法兰价格
 def calHE_flange():
+    HEdao.getf
     pass
 
 

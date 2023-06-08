@@ -168,18 +168,7 @@ INSERT INTO `u_flange2` VALUES (1,'DN100','tan','16','46.80',NULL),(2,'DN100','3
 /*!40000 ALTER TABLE `u_flange2` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `u_formvalid`
---
 
---
--- Dumping data for table `u_formvalid`
---
-
-
---
--- Table structure for table `u_itemcase`
---
 
 --
 -- Dumping data for table `u_itemcase`
@@ -300,6 +289,13 @@ UNLOCK TABLES;
 --
 -- Table structure for table `u_price`
 --
+LOCK TABLES `u_package` WRITE;
+/*!40000 ALTER TABLE `u_package` DISABLE KEYS */;
+INSERT INTO `u_package` VALUES (1,'BP100B',3.000,215.00,NULL),(2,'BP100B',5.000,223.00,NULL),(3,'BP100B',8.000,238.00,NULL),(4,'BP100B',20.000,264.00,NULL),(5,'BP100B',40.000,343.00,NULL);
+/*!40000 ALTER TABLE `u_package` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 DROP TABLE IF EXISTS `u_price`;
 SET @saved_cs_client     = @@character_set_client;
@@ -538,8 +534,11 @@ CREATE TABLE `u_pipeline` (
 
 LOCK TABLES `u_pipeline` WRITE;
 /*!40000 ALTER TABLE `u_pipeline` DISABLE KEYS */;
+INSERT INTO `u_pipeline` VALUES (1,'BP32','tan','150'),(2,'BP50','304','1135'),(3,'BP150','304','2912');
 /*!40000 ALTER TABLE `u_pipeline` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 
 --

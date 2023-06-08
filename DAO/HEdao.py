@@ -5,6 +5,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from DAO.DB import createDB
+from entity.Flange1 import Flange1
+from entity.Package import Package
 from entity.Sheet import Sheet
 from entity.SheetArea import SheetArea
 from entity.Splint import Splint
@@ -192,16 +194,100 @@ def getThinknessAll():
 # 获得板型价格by板型
 
 # 获得法兰数据all（T20592-09化工）
+def getFlange1All():
+    sql = text("select id , type , texture , class , price from u_flange1")
+    with app.app_context():
+        r = db.session.execute(sql)
+        flange1_ls = list()
+        for flange1 in r:
+            flange1_entity = Flange1()
+            flange1_entity.id = flange1[0]
+            flange1_entity.type = flange1[1]
+            flange1_entity.texture = flange1[2]
+            flange1_entity.class_ = flange1[3]
+            flange1_entity.price = flange1[4]
+            flange1_ls.append(flange1_entity)
+    return flange1_ls
 
 # 获得法兰数据（T20592-09化工）by 型号，规格，材质
+def getFlange1ByType(sheet,classs,texture):
+    sql = text("select id , type , texture, class, price from u_flange1 where type = %s and class = %s and texture = %s")
+    para = (sheet , classs, texture)
+    with app.app_context():
+        r = db.session.execute(sql,para)
+        flange1_ls  = r.fetchone()
+        if flange1_ls is not None :
+            flange1 = Flange1()
+            flange1.id = flange1_ls[0]
+            flange1.type = flange1_ls[1]
+            flange1.texture = flange1_ls[2]
+            flange1.class_ = flange1_ls[3]
+            flange1.price = flange1_ls[4]
+    return flange1
 
 # 获得法兰数据all（T81-94国标）
+def getFlange2All():
+    sql = text("select id , type , texture , class , price from u_flange2")
+    with app.app_context():
+        r = db.session.execute(sql)
+        flange2_ls = list()
+        for flange1 in r:
+            flange1_entity = Flange1()
+            flange1_entity.id = flange1[0]
+            flange1_entity.type = flange1[1]
+            flange1_entity.texture = flange1[2]
+            flange1_entity.class_ = flange1[3]
+            flange1_entity.price = flange1[4]
+            flange2_ls.append(flange1_entity)
+    return flange2_ls
 
 # 获得法兰数据（T81-94国标）by 型号，规格，材质
+def getFlange2ByType(sheet,classs,texture):
+    sql = text("select id , type , texture, class, price from u_flange2 where type = %s and class = %s and texture = %s")
+    para = (sheet , classs, texture)
+    with app.app_context():
+        r = db.session.execute(sql,para)
+        flange2_ls  = r.fetchone()
+        if flange2_ls is not None :
+            flange2 = Flange1()
+            flange2.id = flange2_ls[0]
+            flange2.type = flange2_ls[1]
+            flange2.texture = flange2_ls[2]
+            flange2.class_ = flange2_ls[3]
+            flange2.price = flange2_ls[4]
+    return flange2
 
 # 获得包装数据all
+def getPackageAll():
+    sql = text("select     id, type, area, price     from u_package ")
+    with app.app_context():
+        r = db.session.execute(sql)
+        package_ls = list()
+        for packages in r:
+            package_entity = Package()
+            package_entity.id = packages[0]
+            package_entity.type = packages[1]
+            package_entity.area = packages[2]
+            package_entity.price = packages[3]
+            package_ls.append(package_entity)
+    return package_ls
+
 
 # 获得包装数据by型号，面积
+def getPackageByType(sheet, area):
+    sql = text("select     id, type, area, price     from u_package where type = %s and area = %s")
+    para = (sheet , area)
+    with app.app_context():
+        r = db.session.execute(sql,para)
+        packages = r.fetchone()
+        if packages is not None:
+            package_entity = Package()
+            package_entity.id = packages[0]
+            package_entity.type = packages[1]
+            package_entity.area = packages[2]
+            package_entity.price = packages[3]
+    return package_entity
+
 
 # 获得地托数据all
 
