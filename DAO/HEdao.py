@@ -22,6 +22,7 @@ app = Flask(__name__)
 
 db = createDB(app)
 
+
 # 获得所有板型数据
 def getSheetall():
     sheet_ls = list()
@@ -29,7 +30,7 @@ def getSheetall():
         sql = text(" select id , type, pic from u_sheet ")
         list_sheet = db.session.execute(sql)
         for sheet in list_sheet:
-            #print(str(sheet[0]) + " - " + sheet[1])
+            # print(str(sheet[0]) + " - " + sheet[1])
             sheet_entity = Sheet()
             sheet_entity.id = sheet[0]
             sheet_entity.type = sheet[1]
@@ -43,7 +44,7 @@ def getSheetByType(type):
     sheet_entity = Sheet()
     with app.app_context():
         sql = text("select id , type , pic from u_sheet where type like '%%%%" + type + "%%%%'")
-        #logging.debug(sql)
+        # logging.debug(sql)
         list_sheet = db.session.execute(sql)
         sheet = list_sheet.fetchall()
         l = len(sheet)
@@ -63,7 +64,7 @@ def getSheetByType(type):
 # 得到板型单价
 # 参数： 板型，材质， 厚度
 # BP100B, 304, 0,5
-def getPriceByType(sheet,texture, thinkness):
+def getPriceByType(sheet, texture, thinkness):
     with app.app_context():
         sql = text("select sheet_id , texture_id , thinkness_id, price , b.type, c.texture, d.thinkness "
                    "from u_price a inner join  u_sheet b on a.sheet_id = b.id inner join u_texture c on a.texture_id = c.id inner join  u_thinkness d on a.thinkness_id = d.id "
@@ -78,7 +79,7 @@ def getPriceByType(sheet,texture, thinkness):
 def getSplintAll():
     with app.app_context():
         splint_ls = list()
-        sql = text ("select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint")
+        sql = text("select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint")
         spling_list = db.session.execute(sql)
         for splint in spling_list:
             splint_entity = Splint()
@@ -94,15 +95,17 @@ def getSplintAll():
     return splint_ls
 
 
-
 # 获得夹板数据by板型
-def getSplingbyType(type,pressure,classnum,lining):
+def getSplingbyType(type, pressure, classnum, lining):
     with app.app_context():
-        #splint_ls = list()
+        # splint_ls = list()
         splint_entity = Splint()
-        sql = text ("select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint where type like '%%%%" + type + "%%%%' and pressure = " + str(pressure) + " and lining = '" + str(lining) + "' and classmin < " + str(classnum) + "  and classmax >= " + str(classnum))
+        sql = text(
+            "select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint where type like '%%%%" + type + "%%%%' and pressure = " + str(
+                pressure) + " and lining = '" + str(lining) + "' and classmin < " + str(
+                classnum) + "  and classmax >= " + str(classnum))
         spling_list = db.session.execute(sql)
-        #splint_entity = Splint()
+        # splint_entity = Splint()
         splint_ls = spling_list.fetchall()
         l = len(splint_ls)
         if l == 1:
@@ -129,7 +132,7 @@ def getSheetAreaAll():
     with app.app_context():
         area_ls = list()
         area_list = db.session.execute(sql)
-        #area_entity = SheetArea()
+        # area_entity = SheetArea()
         for area in area_list:
             area_entiey = SheetArea()
             area_entiey.id = area[0]
@@ -137,6 +140,7 @@ def getSheetAreaAll():
             area_entiey.area = area[2]
             area_ls.append(area_entiey)
     return area_ls
+
 
 # 获得单板面积by板型
 def getSheetAreaByType(type):
@@ -157,11 +161,12 @@ def getSheetAreaByType(type):
             msg = "查询的结果多余1条数据，请检查查询条件"
         return msg
 
+
 # 获得材质数据all
 def getTextureAll():
     sql = text("select id,texture,about from u_texture")
     texture_ls = list()
-    #tls = list()
+    # tls = list()
     with app.app_context():
         tls = db.session.execute(sql)
         for texture in tls:
@@ -187,6 +192,7 @@ def getThinknessAll():
             thinkness_ls.append(thinkness_entity)
     return thinkness_ls
 
+
 # 获得接管数据all
 
 # 获得板型价格all
@@ -209,14 +215,16 @@ def getFlange1All():
             flange1_ls.append(flange1_entity)
     return flange1_ls
 
+
 # 获得法兰数据（T20592-09化工）by 型号，规格，材质
-def getFlange1ByType(sheet,classs,texture):
-    sql = text("select id , type , texture, class, price from u_flange1 where type = %s and class = %s and texture = %s")
-    para = (sheet , classs, texture)
+def getFlange1ByType(sheet, classs, texture):
+    sql = text(
+        "select id , type , texture, class, price from u_flange1 where type = %s and class = %s and texture = %s")
+    para = (sheet, classs, texture)
     with app.app_context():
-        r = db.session.execute(sql,para)
-        flange1_ls  = r.fetchone()
-        if flange1_ls is not None :
+        r = db.session.execute(sql, para)
+        flange1_ls = r.fetchone()
+        if flange1_ls is not None:
             flange1 = Flange1()
             flange1.id = flange1_ls[0]
             flange1.type = flange1_ls[1]
@@ -224,6 +232,7 @@ def getFlange1ByType(sheet,classs,texture):
             flange1.class_ = flange1_ls[3]
             flange1.price = flange1_ls[4]
     return flange1
+
 
 # 获得法兰数据all（T81-94国标）
 def getFlange2All():
@@ -241,14 +250,16 @@ def getFlange2All():
             flange2_ls.append(flange1_entity)
     return flange2_ls
 
+
 # 获得法兰数据（T81-94国标）by 型号，规格，材质
-def getFlange2ByType(sheet,classs,texture):
-    sql = text("select id , type , texture, class, price from u_flange2 where type = %s and class = %s and texture = %s")
-    para = (sheet , classs, texture)
+def getFlange2ByType(sheet, classs, texture):
+    sql = text(
+        "select id , type , texture, class, price from u_flange2 where type = %s and class = %s and texture = %s")
+    para = (sheet, classs, texture)
     with app.app_context():
-        r = db.session.execute(sql,para)
-        flange2_ls  = r.fetchone()
-        if flange2_ls is not None :
+        r = db.session.execute(sql, para)
+        flange2_ls = r.fetchone()
+        if flange2_ls is not None:
             flange2 = Flange1()
             flange2.id = flange2_ls[0]
             flange2.type = flange2_ls[1]
@@ -256,6 +267,7 @@ def getFlange2ByType(sheet,classs,texture):
             flange2.class_ = flange2_ls[3]
             flange2.price = flange2_ls[4]
     return flange2
+
 
 # 获得包装数据all
 def getPackageAll():
@@ -276,9 +288,9 @@ def getPackageAll():
 # 获得包装数据by型号，面积
 def getPackageByType(sheet, area):
     sql = text("select     id, type, area, price     from u_package where type = %s and area = %s")
-    para = (sheet , area)
+    para = (sheet, area)
     with app.app_context():
-        r = db.session.execute(sql,para)
+        r = db.session.execute(sql, para)
         packages = r.fetchone()
         if packages is not None:
             package_entity = Package()
@@ -288,6 +300,15 @@ def getPackageByType(sheet, area):
             package_entity.price = packages[3]
     return package_entity
 
+# 获得接管数据
+def getPipelineAll():
+    sql = text("select id , type, texture, price from u_pipeline")
+    with app.app_context():
+        r = db.session.execute(sql)
+        for pipeline_s in r:
+            pipeline_entity.
+# 获得接官数据by板型，材质
+def getPipelineAll():
 
 # 获得地托数据all
 
@@ -295,8 +316,8 @@ def getPackageByType(sheet, area):
 
 
 if __name__ == '__main__':
-    #sheet_e = getSheetall()
-    #for sheet in sheet_e:
+    # sheet_e = getSheetall()
+    # for sheet in sheet_e:
     #    print("type - > " + sheet.type)
     ###################################
     # r = getSheetByType('BP100m')

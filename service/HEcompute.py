@@ -103,7 +103,6 @@ def calHE_sheet(sheet, texture, thinkness):
     return sheetPrice
 
 
-
 # 计算框架板价格
 # 参数： sheet: BP100
 # area : 50 板片面积，用于计算板片数量
@@ -117,15 +116,24 @@ def calHE_splint(sheet, area, pressure, lining):
     return splint_entity.price
 
 
-
 # 计算法兰价格
-def calHE_flange():
-    HEdao.getf
-    pass
+def calHE_flange(sheet, classs, texture, stand):
+    if stand == 1:
+        flange_entity = HEdao.getFlange1ByType(sheet, classs, texture)
+    else:
+        flange_entity = HEdao.getFlange2ByType(sheet, classs, texture)
+    return flange_entity.price
+
 
 
 # 计算包装价格
-def calHE_package():
+def calHE_package(sheet , area):
+    package_entity = HEdao.getPackageByType(sheet, area)
+    return package_entity.price
+
+# 计算接管价格
+def calHE_pipeline(sheet, texture):
+    HEdao.getP
     pass
 
 

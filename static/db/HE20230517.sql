@@ -1,30 +1,5 @@
 /*已经有sheet表了，其他表应该引用sheet中的id*/
 
-DROP TABLE IF EXISTS `t_s_version`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `s_version` (
-  `ID` varchar(32) NOT NULL promary key,
-  `loginpage` varchar(100) default NULL,
-  `versioncode` varchar(50) default NULL,
-  `versionname` varchar(30) default NULL,
-  `versionnum` varchar(20) default NULL,
-  PRIMARY KEY  (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `t_s_version`
---
-
-LOCK TABLES `t_s_version` WRITE;
-/*!40000 ALTER TABLE `t_s_version` DISABLE KEYS */;
-/*!40000 ALTER TABLE `t_s_version` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `test_ditie`
---
 
 -- Table structure for table `u_area`
 --
@@ -528,13 +503,14 @@ CREATE TABLE `u_pipeline` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(16) DEFAULT NULL COMMENT '板型',
   `texture` varchar(16) DEFAULT NULL COMMENT '接管材质，碳钢304316',
+  `price` decimal(8,2) default null,
   `about` varchar(128) DEFAULT NULL COMMENT '简介',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `u_pipeline` WRITE;
 /*!40000 ALTER TABLE `u_pipeline` DISABLE KEYS */;
-INSERT INTO `u_pipeline` VALUES (1,'BP32','tan','150'),(2,'BP50','304','1135'),(3,'BP150','304','2912');
+INSERT INTO `u_pipeline` VALUES (1,'BP32','tan','150',''),(2,'BP50','304','1135',''),(3,'BP150','304','2912','');
 /*!40000 ALTER TABLE `u_pipeline` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
