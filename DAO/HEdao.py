@@ -5,8 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from DAO.DB import createDB
+from entity.Collet import Collet
 from entity.Flange1 import Flange1
 from entity.Package import Package
+from entity.Pipeline import Pipeline
 from entity.Sheet import Sheet
 from entity.SheetArea import SheetArea
 from entity.Splint import Splint
@@ -304,15 +306,65 @@ def getPackageByType(sheet, area):
 def getPipelineAll():
     sql = text("select id , type, texture, price from u_pipeline")
     with app.app_context():
+        pipeline_ls = list()
         r = db.session.execute(sql)
         for pipeline_s in r:
-            pipeline_entity.
+            pipeline_entity = Pipeline()
+            pipeline_entity.id = pipeline_s[0]
+            pipeline_entity.type = pipeline_s[1]
+            pipeline_entity.texture = pipeline_s[2]
+            pipeline_entity.price = pipeline_s[3]
+            pipeline_ls.append(pipeline_entity)
+    return pipeline_ls
+
+
 # 获得接官数据by板型，材质
-def getPipelineAll():
+def getPipelineByType(sheet, texture):
+    sql = text("select id , type, texture, price from u_pipeline where type = %s and texture = %s")
+    param = (sheet , texture)
+    with app.app_context():
+        pipeline_ls = list()
+        pipeline_entity = Pipeline()
+        r = db.session.execute(sql,param)
+        pipelines = r.fetchone()
+        if len(pipelines) == 1:
+            pipeline_entity.id = pipelines[0]
+            pipeline_entity.type = pipelines[1]
+            pipeline_entity.texture = pipelines[2]
+            pipeline_entity.price = pipelines[3]
+    return pipeline_entity
+
+
 
 # 获得地托数据all
+def getColletAll():
+    sql = text("select id, type , price from u_collet")
+    with app.app_context():
+        collet_ls = list()
+        r = db.session.execute(sql)
+        for collets in r:
+            collet_entity = Collet();
+            collet_entity.id = collets[0]
+            collet_entity.type = collets[1]
+            collet_entity.price = collets[2]
+            collet_ls.append(collet_entity)
+    return collet_ls
+
+
 
 # 获得底托数据by型号
+def getColletByType(sheet):
+    sql = text("select id, type , price from u_collet where type = %s")
+    param = (sheet)
+    with app.app_context():
+        r = db.session.execute(sql,param)
+        collets = r.fetchone()
+        if len(collets) == 1:
+            collet_entity = Collet();
+            collet_entity.id = collets[0]
+            collet_entity.type = collets[1]
+            collet_entity.price = collets[2]
+    return collet_entity
 
 
 if __name__ == '__main__':

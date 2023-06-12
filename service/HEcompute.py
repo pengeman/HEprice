@@ -46,7 +46,7 @@ def calHE(HEtype):
     price_splint = calHE_splint(HEpara.sheet, HEpara.area, HEpara.pressure, HEpara.lining)
     price_flange = calHE_flange(HEpara.sheet, HEpara.standard, HEpara.lining)
     price_package = calHE_package(HEpara.sheet, HEpara.area)
-    price_collet = calHE_collet(HEpara.sheet, HEpara.area)
+    price_collet = calHE_collet(HEpara.sheet)
     price = price_sheet + price_splint + price_flange + price_package + price_collet
 
 
@@ -133,10 +133,12 @@ def calHE_package(sheet , area):
 
 # 计算接管价格
 def calHE_pipeline(sheet, texture):
-    HEdao.getP
-    pass
+    pipeline_entity = HEdao.getPipelineByType(sheet, texture)
+    return pipeline_entity.price
+
 
 
 # 计算地托价格
-def calHE_collet():
-    pass
+def calHE_collet(sheet):
+    collet_entity = HEdao.getColletByType(sheet)
+    return collet_entity.price
