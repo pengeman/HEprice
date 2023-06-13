@@ -7,7 +7,7 @@ from service.HEparament import HEparament
 HEtype_paramert = {
     "sheet": " ",  # 板型
     "texture": " ",  # 材质
-    "thickness": " ",  # 厚度
+    "thinkness": " ",  # 厚度
     "area": "",  # 面积
     "pressure": " ",  # 压力
     "gasket": "",  # 法兰垫片
@@ -42,7 +42,7 @@ return : HEprice_values = {
 
 def calHE(HEtype):
     HEpara = parse2(HEtype)
-    price_sheet = calHE_sheet(HEpara.sheet, HEpara.texture, HEpara.thickness)
+    price_sheet = calHE_sheet(HEpara.sheet, HEpara.texture, HEpara.thinkness)
     price_splint = calHE_splint(HEpara.sheet, HEpara.area, HEpara.pressure, HEpara.lining)
     price_flange = calHE_flange(HEpara.sheet, HEpara.standard, HEpara.lining)
     price_package = calHE_package(HEpara.sheet, HEpara.area)
@@ -85,12 +85,23 @@ def parse2(HEtype):
     _HEparament.sheet = HEparemets[0]
     _HEparament.area = HEparemets[1]
     _HEparament.texture = HEparemets[2]
-    _HEparament.thickness = HEparemets[3]
+    _HEparament.thinkness = HEparemets[3]
     _HEparament.pressure = HEparemets[4]
     _HEparament.gasket = HEparemets[5]  # 密封垫片
     _HEparament.lining = HEparemets[6]  # 夹板衬套
     _HEparament.pipeline = HEparemets[7]  # 接管
     _HEparament.standard = HEparemets[8]
+    if _HEparament.standard == 1:
+        _HEparament.flange1 = 1
+        _HEparament.flange2 = 0
+    else:
+        _HEparament.flange1 = 0
+        _HEparament.flange2 = 1
+    b = HEparemets[0]
+    b = b[2:][0:2]
+    if b == '32':
+        b = 'BP32b'
+        _HEparament.sheet = b
     return _HEparament
 
 

@@ -70,8 +70,10 @@ def getPriceByType(sheet, texture, thinkness):
     with app.app_context():
         sql = text("select sheet_id , texture_id , thinkness_id, price , b.type, c.texture, d.thinkness "
                    "from u_price a inner join  u_sheet b on a.sheet_id = b.id inner join u_texture c on a.texture_id = c.id inner join  u_thinkness d on a.thinkness_id = d.id "
-                   "where b.type = %s and c.texture = %s and d.thinkness = %s")
-        params = (sheet, texture, thinkness)
+                   "WHERE b.type = :sheet_type AND c.texture = :texture AND d.thinkness = :thinkness")
+
+        params = [{'sheet_type': sheet, 'texture': texture, 'thinkness': thinkness}]  # 使用包含字典的列表
+
         sheets = db.session.execute(sql, params)
         sheet_ls = sheets.fetchone()
         return sheet_ls[3]

@@ -72,8 +72,8 @@ def index():
 
 @app.route('/calculateHE', methods=['POST'])
 def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-0.16Mpa-密封垫片-接管方式)
-    if request.method == "GET":
-        HEtype = request.args.get("ht");
+    if request.method == "POST":
+        HEtype = request.values.get("ht")
         HEprice_values = {
             'price_guide': 'xx',
             'price_90': 'xx',
@@ -81,7 +81,7 @@ def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-
             'price_70': 'xx'
         }
         # 正则验证HEtype格式
-        pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\d{1,3}-(304|316|tai|ni|mo|ha)-(0.5|0.6|0.7|0.8|1.0|1.2)-(0.1|0.16|0.2|0.25)Mpa-(epdm|nbr|fkm)-(304|316)衬套-(tan|304|316)接管-(1|2)$'
+        pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\D{1,3}-\d{1,3}-(304|316|tai|ni|mo|ha)-(0.5|0.6|0.7|0.8|1.0|1.2)-(0.1|0.16|0.2|0.25)Mpa-(epdm|nbr|fkm)-(304|316)衬套-(tan|304|316)接管-(1|2)$'
         va = validate_string(pattern, HEtype)
         logger.debug(va)
         if va is True:

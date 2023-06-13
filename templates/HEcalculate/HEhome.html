@@ -17,6 +17,7 @@
                 $.post('/calculateHE',{ht:hetype}, function(response) {
                     // 请求成功时的回调函数
                     console.log("请求成功！响应数据：" + response);
+                    $('#result').html(response)
                 }).fail(function() {
                     // 请求失败时的回调函数
                     alert("请求失败！");
@@ -67,5 +68,7 @@
     </select>
     <br>
     <button id="b_comp">计算价格</button>
+<hr/>
+<div id="result"></div>
 </body>
 </html>

@@ -7,7 +7,7 @@ class HEparament:
     # 换热器型号数据
     sheet =  " "  # 板型
     texture =  " "  # 材质
-    thickness =  " "  # 厚度
+    thinkness =  " "  # 厚度
     area =  ""  # 面积
     pressure =  " "  # 压力
     gasket =  ""  # 法兰垫片
