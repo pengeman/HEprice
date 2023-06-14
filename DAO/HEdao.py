@@ -1,4 +1,6 @@
 import logging
+import string
+
 ## 获得换热器各部件的信息，如果是单条记录返回entity,如果是多条记录，返回list(entity)
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -60,7 +62,7 @@ def getSheetByType(type):
                 msg = "没有查询到结果"
             else:
                 msg = "查询的结果多余1条数据，请检查查询条件"
-            return msg
+            return None
 
 
 # 得到板型单价
@@ -76,7 +78,10 @@ def getPriceByType(sheet, texture, thinkness):
 
         sheets = db.session.execute(sql, params)
         sheet_ls = sheets.fetchone()
-        return sheet_ls[3]
+        if sheet_ls is None:
+            return None
+        else:
+            return sheet_ls[3]
 
 
 # 获得夹板数据all select id,type,pressure,classmin,classmax lining price , pic from u_splint
@@ -148,22 +153,29 @@ def getSheetAreaAll():
 
 # 获得单板面积by板型
 def getSheetAreaByType(type):
-    sql = text(" select id , sheet , arear from u_sheetarea where sheet like '%%%%" + type + "%%%%'")
+    print('getSheetAreaByType -> type:' + type)
+    type_tmp = type
+    for i in range(len(type_tmp) - 1, -1, -1):
+        #print(type_tmp[i])
+        t = type_tmp[i]
+        if t.isdigit():
+            type = type_tmp[0:i+1]
+            break
+    print(type)
+    sql = text(" select id , sheet , area from u_sheetarea where sheet like '%%%%" + type + "%%%%'")
     area_entity = SheetArea()
-    area = db.session.execute(sql)
-    area_ls = area.fetchall()
-    l = len(area_ls)
-    if l == 1:
-        area_entity.id = area_ls[0].id
-        area_entity.sheet = area_ls[0].sheet
-        area_entity.area = area_ls[0].arear
-        return area_entity
-    else:
-        if l == 0:
-            msg = "没有查询到记录"
-        if l > 1:
-            msg = "查询的结果多余1条数据，请检查查询条件"
-        return msg
+    with app.app_context():
+        area = db.session.execute(sql)
+        areas = area.fetchone()
+
+        if areas is not None:
+            area_entity.id = areas[0]
+            area_entity.sheet = areas[1]
+            area_entity.area = areas[2]
+            return area_entity
+        else:
+            msg = "没有查询到记录 @ getSheetAreaByType"
+            return msg
 
 
 # 获得材质数据all
@@ -367,6 +379,28 @@ def getColletByType(sheet):
             collet_entity.type = collets[1]
             collet_entity.price = collets[2]
     return collet_entity
+
+# 将板型缩短到没有曹深角度，BP100bhv -> bP100
+def sheetTypeShort1(sheet):
+    type_tmp = sheet
+    for i in range(len(type_tmp) - 1, -1, -1):
+        # print(type_tmp[i])
+        t = type_tmp[i]
+        if t.isdigit():
+            type = type_tmp[0:i + 1]
+            break
+    print(type)
+
+# 将板型缩短到没有曹角度，BP100bhv -> bP100b
+def sheetTypeShort2(sheet):
+    type_tmp = sheet
+    for i in range(len(type_tmp) - 1, -1, -1):
+        # print(type_tmp[i])
+        t = type_tmp[i]
+        if t.isdigit():
+            type = type_tmp[0:i + 1]
+            break
+    print(type)
 
 
 if __name__ == '__main__':

@@ -22,6 +22,7 @@ HEpara = HEparament();
 
 ''' 
 换热器型号BP200mhv-300-304-0.5-0.16Mpa-密封垫片-衬套材质-接管方式-1/2化工标准/供热标准
+BP100bhv-30-304-0.5-0.16Mpa-epdm-304衬套-304接管-1
 以BP开头，然后一个数字两位或三位长，包括[32,50,100,150,200,250,300,350,400,450,500,550]，紧接是字符串，2个字符到5个字符长度，其中第一个字符是b或m,然后是分隔符-，
 然后是个数字，从1到999,然后是分隔符-，
 然后是个字符串包括[304,316,tai,ni,mo,ha]，然后是分隔符-，
@@ -97,11 +98,11 @@ def parse2(HEtype):
     else:
         _HEparament.flange1 = 0
         _HEparament.flange2 = 1
-    b = HEparemets[0]
-    b = b[2:][0:2]
-    if b == '32':
-        b = 'BP32b'
-        _HEparament.sheet = b
+    # b = HEparemets[0]
+    # b = b[2:][0:2]
+    # if b == '32':
+    #     b = 'BP32b'
+    #     _HEparament.sheet = b
     return _HEparament
 
 
@@ -122,7 +123,7 @@ def calHE_sheet(sheet, texture, thinkness):
 def calHE_splint(sheet, area, pressure, lining):
     area_entity = HEdao.getSheetAreaByType(sheet)
     sheetarea = area_entity.area
-    classnum = int(sheetarea / area)
+    classnum = int(float(area) / sheetarea)
     splint_entity = HEdao.getSplingbyType(sheet, pressure, classnum, lining)
     return splint_entity.price
 
