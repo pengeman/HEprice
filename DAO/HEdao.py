@@ -69,6 +69,7 @@ def getSheetByType(type):
 # 参数： 板型，材质， 厚度
 # BP100B, 304, 0,5
 def getPriceByType(sheet, texture, thinkness):
+    sheet = sheetTypeShort2(sheet)
     with app.app_context():
         sql = text("select sheet_id , texture_id , thinkness_id, price , b.type, c.texture, d.thinkness "
                    "from u_price a inner join  u_sheet b on a.sheet_id = b.id inner join u_texture c on a.texture_id = c.id inner join  u_thinkness d on a.thinkness_id = d.id "
@@ -106,11 +107,12 @@ def getSplintAll():
 
 # 获得夹板数据by板型
 def getSplingbyType(type, pressure, classnum, lining):
+    type = sheetTypeShort1(type)
     with app.app_context():
         # splint_ls = list()
         splint_entity = Splint()
         sql = text(
-            "select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint where type like '%%%%" + type + "%%%%' and pressure = " + str(
+            "select id,type,pressure,classmin,classmax , lining ,price , pic from u_splint where type = '" + type + "' and pressure = " + str(
                 pressure) + " and lining = '" + str(lining) + "' and classmin < " + str(
                 classnum) + "  and classmax >= " + str(classnum))
         spling_list = db.session.execute(sql)
@@ -132,7 +134,7 @@ def getSplingbyType(type, pressure, classnum, lining):
                 msg = "没有查询到结果"
             else:
                 msg = "查询的结果多余1条数据，请检查查询条件"
-            return msg
+            return None
 
 
 # 获得板型单板面积数据all
@@ -154,15 +156,8 @@ def getSheetAreaAll():
 # 获得单板面积by板型
 def getSheetAreaByType(type):
     print('getSheetAreaByType -> type:' + type)
-    type_tmp = type
-    for i in range(len(type_tmp) - 1, -1, -1):
-        #print(type_tmp[i])
-        t = type_tmp[i]
-        if t.isdigit():
-            type = type_tmp[0:i+1]
-            break
-    print(type)
-    sql = text(" select id , sheet , area from u_sheetarea where sheet like '%%%%" + type + "%%%%'")
+    type = sheetTypeShort1(type)
+    sql = text(" select id , sheet , area from u_sheetarea where sheet = '" + type + "'")
     area_entity = SheetArea()
     with app.app_context():
         area = db.session.execute(sql)
@@ -269,9 +264,11 @@ def getFlange2All():
 
 # 获得法兰数据（T81-94国标）by 型号，规格，材质
 def getFlange2ByType(sheet, classs, texture):
+    sheet = sheetTypeShort1(sheet)
+    sheet = "DN" + sheet[2:]
     sql = text(
-        "select id , type , texture, class, price from u_flange2 where type = %s and class = %s and texture = %s")
-    para = (sheet, classs, texture)
+        "select id , type , texture, class, price from u_flange2 where type = :type and class = :class and texture = :texture")
+    para = [{'type':sheet, 'class':classs, 'texture':texture}]
     with app.app_context():
         r = db.session.execute(sql, para)
         flange2_ls = r.fetchone()
@@ -282,7 +279,9 @@ def getFlange2ByType(sheet, classs, texture):
             flange2.texture = flange2_ls[2]
             flange2.class_ = flange2_ls[3]
             flange2.price = flange2_ls[4]
-    return flange2
+            return flange2
+        else:
+            return None
 
 
 # 获得包装数据all
@@ -303,8 +302,9 @@ def getPackageAll():
 
 # 获得包装数据by型号，面积
 def getPackageByType(sheet, area):
-    sql = text("select     id, type, area, price     from u_package where type = %s and area = %s")
-    para = (sheet, area)
+    sheet = sheetTypeShort2(sheet)
+    sql = text("select     id, type, area, price     from u_package where type = :type and area = :area")
+    para = [{'type':sheet, 'area':area}]
     with app.app_context():
         r = db.session.execute(sql, para)
         packages = r.fetchone()
@@ -314,7 +314,9 @@ def getPackageByType(sheet, area):
             package_entity.type = packages[1]
             package_entity.area = packages[2]
             package_entity.price = packages[3]
-    return package_entity
+            return package_entity
+        else:
+            return None
 
 # 获得接管数据
 def getPipelineAll():
@@ -368,17 +370,20 @@ def getColletAll():
 
 # 获得底托数据by型号
 def getColletByType(sheet):
-    sql = text("select id, type , price from u_collet where type = %s")
-    param = (sheet)
+    sheet = sheetTypeShort1(sheet)
+    sql = text("select id, type , price from u_collet where type = :type")
+    param = [{'type': sheet}]
     with app.app_context():
-        r = db.session.execute(sql,param)
+        r = db.session.execute(sql, param)
         collets = r.fetchone()
-        if len(collets) == 1:
+        if collets is not None:
             collet_entity = Collet();
             collet_entity.id = collets[0]
             collet_entity.type = collets[1]
             collet_entity.price = collets[2]
-    return collet_entity
+            return collet_entity
+        else:
+            return None
 
 # 将板型缩短到没有曹深角度，BP100bhv -> bP100
 def sheetTypeShort1(sheet):
@@ -389,7 +394,7 @@ def sheetTypeShort1(sheet):
         if t.isdigit():
             type = type_tmp[0:i + 1]
             break
-    print(type)
+    return type
 
 # 将板型缩短到没有曹角度，BP100bhv -> bP100b
 def sheetTypeShort2(sheet):
@@ -398,9 +403,9 @@ def sheetTypeShort2(sheet):
         # print(type_tmp[i])
         t = type_tmp[i]
         if t.isdigit():
-            type = type_tmp[0:i + 1]
+            type = type_tmp[0:i+2]
             break
-    print(type)
+    return type
 
 
 if __name__ == '__main__':
@@ -429,6 +434,11 @@ if __name__ == '__main__':
     # for area_entity in area_ls:
     #     print(area_entity.sheet + " - " + str(area_entity.area))
     ################################
-    texture_ls = getTextureAll()
-    for texture in texture_ls:
-        print(str(texture.id) + " - " + texture.texture + " - " + str(texture.about))
+    # texture_ls = getTextureAll()
+    # for texture in texture_ls:
+    #     print(str(texture.id) + " - " + texture.texture + " - " + str(texture.about))
+    # ######################3
+    b = sheetTypeShort1('BP100bhv')
+    print('sheet1:' + b)
+    b = sheetTypeShort2('BP100bhv')
+    print('sheet2:' + b)

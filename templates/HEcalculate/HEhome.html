@@ -7,7 +7,7 @@
     <script>
         $(document).ready(function() {
             // 当页面加载完成时执行以下代码
-
+            var data = ''
             // 选取按钮，并为其添加单击事件处理程序
             $('#b_comp').click(function() {
                 hetype = $('#HEtype').val()
@@ -16,11 +16,18 @@
                 // 发送POST请求
                 $.post('/calculateHE',{ht:hetype}, function(response) {
                     // 请求成功时的回调函数
-                    console.log("请求成功！响应数据：" + response);
-                    $('#result').html(response)
+                    data = JSON.parse(response)
+                    $('#result').html("出厂价：" + data.price_guide);
+                    $('#result1').html("出厂全款价：" + data.price_100);
+                    $('#result2').text("出厂90价：" + data.price_90);
+                    $('#result3').html("出厂80价：" + data.price_80);
+                    $('#result4').html("出厂70价：" + data.price_70);
+                    console.log("请求成功！响应数据：" + data)
+
+
                 }).fail(function() {
                     // 请求失败时的回调函数
-                    alert("请求失败！");
+                    console.log("请求失败！");
                 });
             });
 
@@ -43,32 +50,34 @@
     <textarea id="HEtype" rows="2"></textarea>
     <br>
     <select>
-        <option>选项1</option>
-        <option>选项2</option>
-        <option>选项3</option>
-        <option>选项4</option>
+        <option>BP32</option>
+        <option>BP100</option>
+        <option>BP150</option>
+        <option>BP200</option>
     </select>
     <select>
-        <option>选项1</option>
-        <option>选项2</option>
-        <option>选项3</option>
-        <option>选项4</option>
+        <option>304</option>
+        <option>316</option>
+        <option>Ni</option>
+        <option>Tai</option>
     </select>
     <select>
-        <option>选项1</option>
-        <option>选项2</option>
-        <option>选项3</option>
-        <option>选项4</option>
+        <option>0.5</option>
+        <option>0.6</option>
     </select>
     <select>
-        <option>选项1</option>
-        <option>选项2</option>
-        <option>选项3</option>
-        <option>选项4</option>
+        <option>10公斤</option>
+        <option>16公斤</option>
+        <option>25公斤</option>
     </select>
     <br>
     <button id="b_comp">计算价格</button>
 <hr/>
 <div id="result"></div>
+<div id="result1"></div>
+<div id="result2"></div>
+<div id="result3"></div>
+<div id="result4"></div>
+<img src="static/masterpage.png">
 </body>
 </html>

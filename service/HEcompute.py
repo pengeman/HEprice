@@ -1,4 +1,6 @@
+import json
 import logging.handlers
+from _decimal import Decimal
 
 from DAO import HEdao
 from service.HEparament import HEparament
@@ -22,7 +24,7 @@ HEpara = HEparament();
 
 ''' 
 换热器型号BP200mhv-300-304-0.5-0.16Mpa-密封垫片-衬套材质-接管方式-1/2化工标准/供热标准
-BP100bhv-30-304-0.5-0.16Mpa-epdm-304衬套-304接管-1
+BP100bhv-30-304-0.5-0.16Mpa-epdm-304-304-1
 以BP开头，然后一个数字两位或三位长，包括[32,50,100,150,200,250,300,350,400,450,500,550]，紧接是字符串，2个字符到5个字符长度，其中第一个字符是b或m,然后是分隔符-，
 然后是个数字，从1到999,然后是分隔符-，
 然后是个字符串包括[304,316,tai,ni,mo,ha]，然后是分隔符-，
@@ -45,10 +47,26 @@ def calHE(HEtype):
     HEpara = parse2(HEtype)
     price_sheet = calHE_sheet(HEpara.sheet, HEpara.texture, HEpara.thinkness)
     price_splint = calHE_splint(HEpara.sheet, HEpara.area, HEpara.pressure, HEpara.lining)
-    price_flange = calHE_flange(HEpara.sheet, HEpara.standard, HEpara.lining)
+    price_flange = calHE_flange(HEpara.sheet, HEpara.pressure,HEpara.lining,HEpara.standard)
     price_package = calHE_package(HEpara.sheet, HEpara.area)
     price_collet = calHE_collet(HEpara.sheet)
-    price = price_sheet + price_splint + price_flange + price_package + price_collet
+    try:
+        price = price_sheet + price_splint + price_flange + price_package + price_collet
+        HEprice_value = {
+            'price_guide': int(price),
+            'price_90': int(price * Decimal.from_float(0.9)),
+            'price_80': int(price * Decimal.from_float(0.8)),
+            'price_70': int(price * Decimal.from_float(0.7))
+        }
+        return json.dumps(HEprice_value)
+    except TypeError:
+        price = 0
+        return json.dumps({
+            'price_guide': price,
+            'price_90': price  ,
+            'price_80': price  ,
+            'price_70': price
+        })
 
 
 def parse(HEtype):
@@ -92,17 +110,24 @@ def parse2(HEtype):
     _HEparament.lining = HEparemets[6]  # 夹板衬套
     _HEparament.pipeline = HEparemets[7]  # 接管
     _HEparament.standard = HEparemets[8]
+    pressure = _HEparament.pressure[0:4]
+    if pressure == '0.10':
+        pressure = 10
+    elif pressure == '0.16':
+        pressure = 16
+    elif pressure == '0.20':
+        pressure = 20
+    elif pressure == '0.25':
+        pressure = 25
+    _HEparament.pressure = pressure
+
     if _HEparament.standard == 1:
         _HEparament.flange1 = 1
         _HEparament.flange2 = 0
     else:
         _HEparament.flange1 = 0
         _HEparament.flange2 = 1
-    # b = HEparemets[0]
-    # b = b[2:][0:2]
-    # if b == '32':
-    #     b = 'BP32b'
-    #     _HEparament.sheet = b
+
     return _HEparament
 
 
@@ -112,7 +137,10 @@ def parse2(HEtype):
 # thinckness: 0.5, 0,6
 def calHE_sheet(sheet, texture, thinkness):
     sheetPrice = HEdao.getPriceByType(sheet, texture, thinkness)
-    return sheetPrice
+    if sheetPrice is not None:
+        return sheetPrice
+    else:
+        return None
 
 
 # 计算框架板价格
@@ -125,10 +153,14 @@ def calHE_splint(sheet, area, pressure, lining):
     sheetarea = area_entity.area
     classnum = int(float(area) / sheetarea)
     splint_entity = HEdao.getSplingbyType(sheet, pressure, classnum, lining)
-    return splint_entity.price
+    if splint_entity is not None:
+        return splint_entity.price
+    else:
+        return None
 
 
 # 计算法兰价格
+# 参数：板型，规格：10公斤/16公斤，材质，标准
 def calHE_flange(sheet, classs, texture, stand):
     if stand == 1:
         flange_entity = HEdao.getFlange1ByType(sheet, classs, texture)
@@ -137,20 +169,30 @@ def calHE_flange(sheet, classs, texture, stand):
     return flange_entity.price
 
 
-
 # 计算包装价格
-def calHE_package(sheet , area):
+def calHE_package(sheet, area):
     package_entity = HEdao.getPackageByType(sheet, area)
-    return package_entity.price
+    if package_entity is not None :
+        return package_entity.price
+    else:
+        return None
+
 
 # 计算接管价格
 def calHE_pipeline(sheet, texture):
     pipeline_entity = HEdao.getPipelineByType(sheet, texture)
-    return pipeline_entity.price
+    if pipeline_entity is not None:
+        return pipeline_entity.price
+    else:
+        return None
 
 
 
 # 计算地托价格
 def calHE_collet(sheet):
     collet_entity = HEdao.getColletByType(sheet)
-    return collet_entity.price
+    if collet_entity is not None:
+        return collet_entity.price
+    else:
+        return None
+
