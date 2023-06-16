@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        .ebox {
+            width: 400px;
+            height: 340px;
+            background: #0d1830;
+            display: none;  // display: none; 不能少，否则show() 方法不起作用 【visibility: hidden不能使用show和hide方法，只能操作起样式】 position: fixed;
+            left: 50px;
+            top: 50px;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+<h2>底托设置</h2>
+<table style="border: 1px solid black;border-collapse: collapse;padding: 8px;">
+    <tr>
+        <th>型号</th>
+        <th>单价</th>
+    </tr>
+    <tr>
+        <td>BP100</td>
+        <td>150</td>
+    </tr>
+    <tr>
+        <td>BP150</td>
+        <td>250</td>
+    </tr>
+</table>
+<a href="javascript:void(0);" onclick="newitem()">新增</a>
+<div id='ebox' class='ebox'>
+    <div class="head">
+        <div class="headLeft" @click="checkBoxClose">xsdfsdfasdfsdf</div>
+    </div>
+    这是弹框的内容
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    function newitem() {
+$("#ebox").show();
+
+    }
+
+</script>
+
+<!DOCTYPE html>
+模态对话框
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .table{
+            text-align: center;
+        }
+        .hide{
+            display: none;
+        }
+        .modal{
+            position: fixed;
+            background-color: white;
+            width: 500px;
+            height: 400px;
+            top:50%;
+            left:50%;
+            margin-left: -250px;
+            margin-top: -300px;
+            z-index:10;
+        }
+        .shadow{
+            position: fixed;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            background-color: gray;
+            opacity: 60%;
+            z-index:9;
+        }
+    </style>
+</head>
+<body>
+
+  <div>
+      <input id="add" type="button" value="添加" />
+  </div>
+  <table class="table">
+      <thead>
+        <tr>
+            <td>IP</td>
+            <td>PORT</td>
+            <td>操作</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td target="ip">1.1.1.11</td>
+            <td target="port">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a>删除</a>
+            </td>
+        </tr>
+        <tr>
+            <td target="ip">1.1.1.12</td>
+            <td target="port">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a>删除</a>
+            </td>
+        </tr>
+        <tr>
+            <td target="ip">1.1.1.13</td>
+            <td target="port">80</td>
+            <td>
+                <a class="edit">编辑</a> | <a>删除</a>
+            </td>
+        </tr>
+      </tbody>
+  </table>
+
+  <div class="modal hide">
+      <div>
+          <input type="text" name="ip"/>
+          <input type="text" name="port"/>
+      </div>
+      <div>
+          <input id="cancel" type="button" value="取消" />
+      </div>
+  </div>
+  <div class="shadow hide"></div>
+
+  <script src="jquery-1.12.4.js"></script>
+  <script>
+
+      //点击添加按钮，将蒙版层和模态框的hide样式去除
+      $("#add").click(function(){
+          $(".modal,.shadow").removeClass('hide');
+      });
+
+      //点击取消按钮，将蒙版层和模态框的hide样式加上
+      $("#cancel").click(function(){
+          $(".modal,.shadow").addClass('hide');
+      });
+
+      //点击编辑
+      $('.edit').click(function(){
+
+          $(".modal,.shadow").removeClass('hide');
+
+          var tds = $(this).parent().prevAll(); //获取到“编辑”父标签前面的所有标签
+          tds.each(function(){
+              var target = $(this).attr('target');      //获取标签target属性的值
+              var text = $(this).text();    //获取标签的文本内容
+
+              $('.modal input[name ="'+ target + '"]').val(text);   //将值传给输入框
+          })
+      })
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>{{title}}</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>
+            <h2>设置</h2>
+            <label><a href="javascript:void(0);" onclick="menu_clicked('collet')"> 底托设置</a> </label><br/>
+            <label>法兰设置/T20592化工</label><br/>
+            <label>法兰设置/T81-94国标</label><br/>
+            <label>包装设置</label><br/>
+            <label>板片单价</label><br/>
+            <label>板型设置</label><br/>
+            <label>单板面积</label><br/>
+            <label>夹板设置</label><br/>
+            <label>材质设置</label><br/>
+            <label>板片厚度设置</label><br/>
+            <label>夹板接管设置</label><br/>
+            <label>用户设置</label><br/>
+
+        </td>
+        <td>
+            <div id="setup_content"></div>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
+<script type="text/javascript">
+    function menu_clicked(setupitem) {
+        console.log("setup item is " + setupitem)
+        $.ajax({
+            type: "GET",          //以post方法提交数据给服务器
+            url: "/setup",               //提交数据到User
+            dataType: "text",      //数据类型
+            data: {                        //传给服务器的数据
+                "menu": setupitem
+            },
+            success: function (data) {         //回调函数
+                $("#setup_content").html(data)
+            },
+            error:function (data){
+
+            }
+        });
+    }
+</script>

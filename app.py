@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, session
 from regex import regex
 import re
 from controllers.loginhome import login
@@ -7,10 +7,12 @@ from service.login import login_check
 import logging.handlers
 
 logger = logging.getLogger("my_loger")
+
+
 def setLogging():
     LOG_FORMAT = "%(asctime)s - [%(levelname)s] - %(message)s"
     # logging.basicConfig(filename="test.log", level=logging.DEBUG, format=LOG_FORMAT)
-    #logger = logging.getLogger("my_loger")
+    # logger = logging.getLogger("my_loger")
     logger.setLevel(logging.DEBUG)
 
     console_handler = logging.StreamHandler()
@@ -38,6 +40,7 @@ def create_app():
 loginhomepage = "loginhome/login.html"
 workhomepage = "HEcalculate/HEhome.html"
 app = create_app()
+app.secret_key = '123456'
 
 
 @app.route('/')
@@ -57,6 +60,7 @@ def login():
         isok = login_check(user, pwd)
         if isok:
             print("app.py59 : " + str(isok))
+            session['user'] = user
             return render_template(workhomepage)
         else:
             return render_template(loginhomepage, message=message)
@@ -73,6 +77,8 @@ def index():
 @app.route('/calculateHE', methods=['POST'])
 def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-0.16Mpa-密封垫片-接管方式)
     if request.method == "POST":
+        user = session.get("user")
+        if user is None: return render_template("/loginhome/login.html", title='登录')
         HEtype = request.values.get("ht")
         HEprice_values = {
             'price_guide': 'xx',
@@ -88,8 +94,21 @@ def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-
             HEprice_values = calHE(HEtype)  # 计算单价
             return HEprice_values
         else:
-            return "换热器格式不正确"
+            return "换热器格式不正确,<br/>请参考：换热器型号BP200mhv-300-304-0.5-0.16Mpa-密封垫片-衬套材质-接管方式-1/2化工标准/供热标准<br/>BP100bhv-30-304-0.5-0.16Mpa-epdm-304-304-1"
 
+
+# 打开页面，设置后台数据
+@app.route("/setup")
+def setup():
+    user = session.get("user")
+    if user is None:
+        return render_template("/loginhome/login.html", title="登录")
+    url = request.args.get("menu")
+    if url is None:
+        return render_template("setup/setup.html", title="设置")
+    if url == "collet":
+        return render_template("setup/collet.html")
+    return "你来干什么，你看到什么了？小心我灭口"
 
 
 def validate_string(pattern, input_string):
