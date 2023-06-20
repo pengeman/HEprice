@@ -17,3 +17,15 @@ class Splint(object):
         self.lining = ''
         self.price = 0
         self.pic = ''
+
+    def jsonformat(self):
+        return {
+            "id": self.id,
+            "type": str(self.type),
+            "pressure": self.pressure,
+            "classmin": self.classmin,
+            "classmax": self.classmax,
+            "lining": str(self.lining),
+            "price": self.price,
+            "pic": self.pic
+        }

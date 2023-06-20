@@ -14,3 +14,12 @@ class User(object):
         department = ""
         role = ""
 
+    def jsonformat(self):
+        return {
+            "id": self.id,
+            "name": str(self.name),
+            "code": str(self.code),
+            "password": str(self.password),
+            "department": str(self.department),
+            "role": str(self.role)
+        }

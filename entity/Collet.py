@@ -12,3 +12,10 @@ class Collet(object):
         price = 0
         about = ""
 
+    def jsonformat(self):
+        return {
+            "id": self.id,
+            "type": str(self.type),
+            "price": str(self.price),
+            "about": self.about
+        }

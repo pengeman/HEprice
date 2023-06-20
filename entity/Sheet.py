@@ -8,3 +8,9 @@ class Sheet(object):
         self.type = ""
         self.pic = ""
 
+    def jsonformat(self):
+        return {
+            "id": self.id,
+            "type": str(self.type),
+            "pic": str(self.pic)
+        }

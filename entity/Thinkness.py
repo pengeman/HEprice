@@ -7,3 +7,11 @@ class Thinkness(object):
         self.id = 0
         self.thinkness = 0.0
         self.about = ""
+
+
+    def jsonformat(self):
+        return {
+            "id": self.id,
+            "thinkness": self.thinkness,
+             "about": self.about
+        }

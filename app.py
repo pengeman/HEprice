@@ -1,8 +1,12 @@
+import json
+
 from flask import Flask, redirect, url_for, render_template, request, session
 from regex import regex
 import re
 from controllers.loginhome import login
+from entity.Collet import Collet
 from service.HEcompute import calHE
+from service.HEservice import getColletAll
 from service.login import login_check
 import logging.handlers
 
@@ -107,8 +111,23 @@ def setup():
     if url is None:
         return render_template("setup/setup.html", title="设置")
     if url == "collet":
-        return render_template("setup/collet.html")
+        ## 获得底托的数据
+        collet_list = getColletAll()
+        collet_ls = list()
+        # collet_entity = Collet()
+        collet_newjson = []
+        for collet_entity in collet_list:
+            collet_json = collet_entity.jsonformat()
+            collet_newjson.append(collet_json)
+        js = json.dumps(collet_newjson)
+        print(js)
+        return render_template("setup/collet.html", js=js)
     return "你来干什么，你看到什么了？小心我灭口"
+
+
+@app.route("/sa1")
+def sa1():
+    return render_template("setup/sa1.html")
 
 
 def validate_string(pattern, input_string):
