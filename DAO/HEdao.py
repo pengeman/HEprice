@@ -268,7 +268,7 @@ def getFlange2ByType(sheet, classs, texture):
     sheet = "DN" + sheet[2:]
     sql = text(
         "select id , type , texture, class, price from u_flange2 where type = :type and class = :class and texture = :texture")
-    para = [{'type':sheet, 'class':classs, 'texture':texture}]
+    para = [{'type': sheet, 'class': classs, 'texture': texture}]
     with app.app_context():
         r = db.session.execute(sql, para)
         flange2_ls = r.fetchone()
@@ -304,7 +304,7 @@ def getPackageAll():
 def getPackageByType(sheet, area):
     sheet = sheetTypeShort2(sheet)
     sql = text("select     id, type, area, price     from u_package where type = :type and area = :area")
-    para = [{'type':sheet, 'area':area}]
+    para = [{'type': sheet, 'area': area}]
     with app.app_context():
         r = db.session.execute(sql, para)
         packages = r.fetchone()
@@ -317,6 +317,7 @@ def getPackageByType(sheet, area):
             return package_entity
         else:
             return None
+
 
 # 获得接管数据
 def getPipelineAll():
@@ -337,11 +338,11 @@ def getPipelineAll():
 # 获得接官数据by板型，材质
 def getPipelineByType(sheet, texture):
     sql = text("select id , type, texture, price from u_pipeline where type = %s and texture = %s")
-    param = (sheet , texture)
+    param = (sheet, texture)
     with app.app_context():
         pipeline_ls = list()
         pipeline_entity = Pipeline()
-        r = db.session.execute(sql,param)
+        r = db.session.execute(sql, param)
         pipelines = r.fetchone()
         if len(pipelines) == 1:
             pipeline_entity.id = pipelines[0]
@@ -349,7 +350,6 @@ def getPipelineByType(sheet, texture):
             pipeline_entity.texture = pipelines[2]
             pipeline_entity.price = pipelines[3]
     return pipeline_entity
-
 
 
 # 获得地托数据all
@@ -365,7 +365,6 @@ def getColletAll():
             collet_entity.price = collets[2]
             collet_ls.append(collet_entity)
     return collet_ls
-
 
 
 # 获得底托数据by型号
@@ -385,6 +384,7 @@ def getColletByType(sheet):
         else:
             return None
 
+
 # 将板型缩短到没有曹深角度，BP100bhv -> bP100
 def sheetTypeShort1(sheet):
     type_tmp = sheet
@@ -396,6 +396,7 @@ def sheetTypeShort1(sheet):
             break
     return type
 
+
 # 将板型缩短到没有曹角度，BP100bhv -> bP100b
 def sheetTypeShort2(sheet):
     type_tmp = sheet
@@ -403,9 +404,36 @@ def sheetTypeShort2(sheet):
         # print(type_tmp[i])
         t = type_tmp[i]
         if t.isdigit():
-            type = type_tmp[0:i+2]
+            type = type_tmp[0:i + 2]
             break
     return type
+
+
+# 底托新增一条记录,返回影响数据库的记录数
+def newCollet(type, price):
+    sql = text("insert into u_collet(type,price) values(:type,:price)")
+    para = [{"type": type, "price": price}]
+    with app.app_context():
+        db.session.execute(sql, para)
+        r = db.session.execute(text("select @@identity as i"))
+        r1 = r.fetchone()[0]
+        if r1 > 0:
+            db.session.commit()
+        db.session.close();
+        return r1
+
+
+# 底托更新一条记录,返回影响数据库的记录数
+def updateCollet(id, type, price):
+    sql = text("update u_collet set type=':type',price=':price' where id = :id")
+    para = [{"id": id, "type": type, "price": price}]
+    with app.app_context():
+        r = db.session.execute(sql, para)
+        r1 = r.fetchone()[0]
+        if r1 > 0:
+            db.session.commit()
+        db.session.close();
+        return r1
 
 
 if __name__ == '__main__':

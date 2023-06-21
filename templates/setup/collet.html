@@ -39,87 +39,191 @@
     </style>
 </head>
 <body>
-<input type="button" value="添加">
+<!--<input type="button" value="添加">-->
 <div class="container">
-    <table border="1">
-        <tr>
-            <td target="hostname">1.1.1.1</td>
-            <td target="port">80</td>
-            <td target="ip">192.168.1.101</td>
-            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>
-        </tr>
-        <tr>
-            <td target="hostname">1.1.1.2</td>
-            <td target="port">81</td>
-            <td target="ip">192.168.1.102</td>
-            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>
-        </tr>
-        <tr>
-            <td target="hostname">1.1.1.3</td>
-            <td target="port">82</td>
-            <td target="ip">192.168.1.103</td>
-            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>
-        </tr>
-        <tr>
-            <td target="hostname">1.1.1.4</td>
-            <td target="port">83</td>
-            <td target="ip">192.168.1.104</td>
-            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>
-        </tr>
-    </table>
-
+    <!--    <table border="1">-->
+    <!--        <tr>-->
+    <!--            <td target="hostname">1.1.1.1</td>-->
+    <!--            <td target="port">80</td>-->
+    <!--            <td target="ip">192.168.1.101</td>-->
+    <!--            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td target="hostname">1.1.1.2</td>-->
+    <!--            <td target="port">81</td>-->
+    <!--            <td target="ip">192.168.1.102</td>-->
+    <!--            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td target="hostname">1.1.1.3</td>-->
+    <!--            <td target="port">82</td>-->
+    <!--            <td target="ip">192.168.1.103</td>-->
+    <!--            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td target="hostname">1.1.1.4</td>-->
+    <!--            <td target="port">83</td>-->
+    <!--            <td target="ip">192.168.1.104</td>-->
+    <!--            <td><input type="button" value="编辑"> | <input type="button" value="删除"></td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
+</div>
     <input type="button" value="添加">
     <div id="div_js" style="display:none">{{js}}</div>
 
     <br/>
     <table id="collet_list" border="1"></table>
-</div>
-<div class="modal hide">
-    <p>主机：<input name="hostname" type="text"></p>
-    <p>端口：<input name="port" type="text"></p>
-    <p>地址：<input name="ip" type="text"></p>
-    <p><input type="button" value="取消"></p>
-</div>
-<div class="shade hide"></div>
-<script>
-    $(function () {
-        js1 = $("#div_js").text();
-        js2 = JSON.parse(js1);
-tr = ["<tr><td>序号</td><td>板型</td><td>单价</td><td>操作</td></tr>"]
-        $.each(js2, function (index, jsonObject) {
-            tr.push("<tr><td>"+index+"</td><td>"+jsonObject['type']+"</td><td>"+jsonObject['price']+"</td>" +
-                "<td><input type=\"button\" value=\"编辑\"> | <input type=\"button\" value=\"删除\"></td></tr>");
+    <!--</div>-->
+    <div class="modal hide">
+        <div id="dialogtitle">新增一个底托价格</div>
+        <br/>
+        <p><input id="id" name="id" type="text"></p>
+        <p>板型：<input id="type" name="hostname" type="text"></p>
+        <p>单价：<input id="price" name="port" type="text"></p>
+        <p><input id="cancel" type="button" value="取消">
+            <input id="confirm" type="button"  value="确定" ></p>
+    </div>
+    <div class="shade hide"></div>
+    <script>
+        $(function () {
+            js1 = $("#div_js").text();
+            js2 = JSON.parse(js1);
+            tr = ["<tr><td>序号</td><td>板型</td><td>单价</td><td>操作</td></tr>"]
+            $.each(js2, function (index, jsonObject) {
+                tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['price'] + "</td>" +
+                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['type']+"','"+jsonObject['price']+"')\"> | <input type=\"button\" value=\"删除\"></td></tr>");
+            });
+
+            $('#collet_list').html(tr)
+        });
+        //添加按钮
+        $('input[value="添加"]').click(function () {
+            $('.hide').removeClass('hide');
+            $('#dialogtitle').text("新增一个底托价格");
+            $('#confirm').val('确定');
+            confirm_b = 1;
+        });
+        //取消按钮
+        $('input[value="取消"]').click(function () {
+            $('input[type="text"]').val('');
+            $('.modal,.shade').addClass('hide');
+        });
+        // 确定按钮
+        $('input[value="确定"]').click(function () {
+            if (confirm_b == 2){ update(); return ;}
+            type = $("#type").val();
+            price = $("#price").val();
+            $.ajax({
+                type: "GET",          //以post方法提交数据给服务器
+                url: "/setup/newcollet",               //提交数据到User
+                dataType: "text",      //数据类型
+                data: {                        //传给服务器的数据
+                    "type": type,
+                    "price": price
+                },
+                success: function (data) {         //回调函数
+                    console.log("新增" + data);
+                    if (data == 1) {
+                        $('.modal,.shade').addClass('hide');
+                        let setupitem = "collet";
+                        $.ajax({
+                            type: "GET",          //以post方法提交数据给服务器
+                            url: "/setup",               //提交数据到User
+                            dataType: "text",      //数据类型
+                            data: {                        //传给服务器的数据
+                                "menu": setupitem
+                            },
+                            success: function (data) {         //回调函数
+                                $("#setup_content").html(data)
+                            },
+                            error: function (data) {
+
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    alert("新增底托失败")
+                }
+            });
+            $('input[type="text"]').val('');
+
         });
 
-        $('#collet_list').html(tr)
-    });
-    //添加按钮
-    $('input[value="添加"]').click(function () {
-        $('.hide').removeClass('hide');
-    });
-    //取消按钮
-    $('input[value="取消"]').click(function () {
-        $('input[type="text"]').val('');
-        $('.modal,.shade').addClass('hide');
-    });
-    //编辑按钮
-    $('input[value="编辑"]').click(function () {
-        $('.hide').removeClass('hide');
-        //获取点击前面标签
-        var tds = $(this).parent().prevAll();
-        tds.each(function () {
-            //获取target值
-            var tar_val = $(this).attr('target');
-            //获取当前td的内容
-            var con = $(this).text();
-            //根据target寻找modal中的对应框，并写入内容
-            $('.modal input[name="' + tar_val + '"]').val(con);
-        });
-    });
-    //删除按钮
-    $('input[value="删除"]').click(function () {
-        $(this).parent().parent().remove();
-    });
-</script>
+        // 更新按钮对应的方法
+        function update() {
+            id = $("#id").val()
+            type = $("#type").val()
+            price = $("#price").val()
+            console.log(" function update : " + id + type + price);
+            $.ajax({
+                type: "GET",          //以post方法提交数据给服务器
+                url: "/setup/updatecollet",               //提交数据到User
+                dataType: "text",      //数据类型
+                data: {                        //传给服务器的数据
+                    "id": id,
+                    "type": type,
+                    "price": price
+                },
+                success: function (data) {         //回调函数
+                    console.log("更新" + data);
+                    if (data == 1) {
+                        $('.modal,.shade').addClass('hide');
+                        let setupitem = "collet";
+                        $.ajax({
+                            type: "GET",          //以post方法提交数据给服务器
+                            url: "/setup",               //提交数据到User
+                            dataType: "text",      //数据类型
+                            data: {                        //传给服务器的数据
+                                "menu": setupitem
+                            },
+                            success: function (data) {         //回调函数
+                                $("#setup_content").html(data)
+                            },
+                            error: function (data) {
+
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    alert("更新底托失败")
+                }
+            });
+            $('input[type="text"]').val('');
+
+        }
+        //编辑按钮
+        // $('input[value="编辑"]').click(function () {
+        //     $('.hide').removeClass('hide');
+        //     //获取点击前面标签
+        //     var tds = $(this).parent().prevAll();
+        //     tds.each(function () {
+        //         //获取target值
+        //         var tar_val = $(this).attr('target');
+        //         //获取当前td的内容
+        //         var con = $(this).text();
+        //         //根据target寻找modal中的对应框，并写入内容
+        //         $('.modal input[name="' + tar_val + '"]').val(con);
+        //     });
+        // });
+        //删除按钮
+        // $('input[value="删除"]').click(function () {
+        //     $(this).parent().parent().remove();
+        // });
+    </script>
+    <script type="text/javascript">
+        let confirm_b = 2; // 1表示新增，2表示更新
+        // 当编辑按钮被点击是触发
+        function modify(index, type, price){
+            confirm_b = 2;
+            console.log("modify button clicked for " + index + type + price);
+            $('#confirm').val('更新');
+            $('#dialogtitle').text("更新一个底托价格");
+            $("#type").val(type);
+            $("#price").val(price);
+            $('.hide').removeClass('hide');
+        }
+    </script>
 </body>
 </html>

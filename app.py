@@ -3,6 +3,8 @@ import json
 from flask import Flask, redirect, url_for, render_template, request, session
 from regex import regex
 import re
+
+import service.HEservice
 from controllers.loginhome import login
 from entity.Collet import Collet
 from service.HEcompute import calHE
@@ -125,9 +127,22 @@ def setup():
     return "你来干什么，你看到什么了？小心我灭口"
 
 
-@app.route("/sa1")
-def sa1():
-    return render_template("setup/sa1.html")
+@app.route("/setup/newcollet")
+def newcollet():
+    type = request.args.get("type")
+    price = request.args.get("price")
+    r = service.HEservice.newCollet(type,price) ## 如果执行成功返回1,否则返回0
+    print(r)
+    return str(r)
+
+@app.route("/setup/updatecollet")
+def updatecollet():
+    id = request.args.get("id")
+    type = request.args.get("type")
+    price = request.args.get("price")
+    r = service.HEservice.updateCollet(id, type, price)  ## 如果执行成功返回1,否则返回0
+    print(r)
+    return str(r)
 
 
 def validate_string(pattern, input_string):
