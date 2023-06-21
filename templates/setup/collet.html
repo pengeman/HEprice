@@ -91,7 +91,8 @@
             tr = ["<tr><td>序号</td><td>板型</td><td>单价</td><td>操作</td></tr>"]
             $.each(js2, function (index, jsonObject) {
                 tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['price'] + "</td>" +
-                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['type']+"','"+jsonObject['price']+"')\"> | <input type=\"button\" value=\"删除\"></td></tr>");
+                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['type']+"','"+jsonObject['price']+"')\"> " +
+                    "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
             });
 
             $('#collet_list').html(tr)
@@ -207,7 +208,15 @@
         //         $('.modal input[name="' + tar_val + '"]').val(con);
         //     });
         // });
+
         //删除按钮
+        function deleterow(id){
+            c = confirm("确认要删除这叫记录吗("+id+")" );
+            console.log(c);
+            if (c){
+                alert("程序还没有完成,再等等吧");
+            }
+        }
         // $('input[value="删除"]').click(function () {
         //     $(this).parent().parent().remove();
         // });
@@ -220,6 +229,7 @@
             console.log("modify button clicked for " + index + type + price);
             $('#confirm').val('更新');
             $('#dialogtitle').text("更新一个底托价格");
+            $('#id').val(index);
             $("#type").val(type);
             $("#price").val(price);
             $('.hide').removeClass('hide');

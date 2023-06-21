@@ -425,11 +425,11 @@ def newCollet(type, price):
 
 # 底托更新一条记录,返回影响数据库的记录数
 def updateCollet(id, type, price):
-    sql = text("update u_collet set type=':type',price=':price' where id = :id")
+    sql = text("update u_collet set type=:type,price=:price where id = :id")
     para = [{"id": id, "type": type, "price": price}]
     with app.app_context():
         r = db.session.execute(sql, para)
-        r1 = r.fetchone()[0]
+        r1 = r.rowcount
         if r1 > 0:
             db.session.commit()
         db.session.close();
