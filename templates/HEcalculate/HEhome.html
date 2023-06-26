@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <title>{{title}}</title>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // 当页面加载完成时执行以下代码
             var data = ''
             // 选取按钮，并为其添加单击事件处理程序
-            $('#b_comp').click(function() {
+            $('#b_comp').click(function () {
                 hetype = $('#HEtype').val()
                 // 单击事件发生时执行的代码
                 console.log(hetype)
                 // 发送POST请求
-                $.post('/calculateHE',{ht:hetype}, function(response) {
+                $.post('/calculateHE', {ht: hetype}, function (response) {
                     // 请求成功时的回调函数
                     data = JSON.parse(response)
                     $('#result').html("出厂价：" + data.price_guide);
@@ -25,7 +25,7 @@
                     console.log("请求成功！响应数据：" + data)
 
 
-                }).fail(function() {
+                }).fail(function () {
                     // 请求失败时的回调函数
                     console.log("请求失败！");
                 });
@@ -34,50 +34,68 @@
         });
     </script>
     <style>
+        #hrtype {
+            width: 100%;
+        }
+
         textarea {
             width: 60%;
             resize: horizontal;
         }
+
         select {
             width: 15%;
         }
+
         button {
             margin-top: 10px;
+        }
+
+        #id_footer {
+            height: 40px; /*设定footer高度*/
+            position: absolute; /*设定footer绝对位置在底部*/
+            bottom: 0;
+            width: 100%; /*展开footer宽度*/
+            background-color: yellow;
+            line-height: 40px;
         }
     </style>
 </head>
 <body>
-<table>
+<table id="hrtype">
     <tr>
         <td><textarea id="HEtype" rows="2">BP100bhv-40-304-0.5-0.16Mpa-epdm-304-304-1</textarea></td>
-        <td><a href="/setup">setup</a></td>
     </tr>
 </table>
 
-    <br>
-    <select>
-        <option>BP32</option>
-        <option>BP100</option>
-        <option>BP150</option>
-        <option>BP200</option>
-    </select>
-    <select>
-        <option>304</option>
-        <option>316</option>
-        <option>Ni</option>
-        <option>Tai</option>
-    </select>
-    <select>
-        <option>0.5</option>
-        <option>0.6</option>
-    </select>
-    <select>
-        <option>10公斤</option>
-        <option>16公斤</option>
-        <option>25公斤</option>
-    </select>
-    <br>
-    <button id="b_comp">计算价格</button>
+<br>
+<select id="select_sheet">
+    <option>BP32</option>
+    <option>BP100</option>
+    <option>BP150</option>
+    <option>BP200</option>
+</select>
+<select id="select_texture">
+    <option>304</option>
+    <option>316</option>
+    <option>Ni</option>
+    <option>Tai</option>
+</select>
+<select id="select_thinkness">
+    <option>0.5</option>
+    <option>0.6</option>
+</select>
+<select id="select_pressure">
+    <option>10公斤</option>
+    <option>16公斤</option>
+    <option>25公斤</option>
+</select>
+<select id="select_package">
+    <option>木箱包装</option>
+    <option>底托</option>
+</select>
+<br>
+<button id="b_comp">计算价格</button>
 <hr/>
 <div id="result"></div>
 <div id="result1"></div>
@@ -85,5 +103,51 @@
 <div id="result3"></div>
 <div id="result4"></div>
 <img src="static/masterpage.png">
+<footer id="id_footer">
+    Footer Block<a href="/setup">setup</a>
+</footer>
 </body>
 </html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",          //以get方法提交数据给服务器
+            url: "/calculateHE/basedata",               //请求数据，所有设备参数
+            dataType: "text",      //数据类型
+            data: {                        //传给服务器的数据
+                "menu": 'HEdata'
+            },
+            success: function (data) {         //回调函数
+                select_data = JSON.parse(data)
+                $.each(select_data, function (key, v) {
+                    jv = JSON.parse(v);
+                    $.each(jv,function (k2,v2){
+                        if (k2 == "sheet"){
+                        $("#select_sheet").append(v2)
+                            if (k2 == "texture"){
+                        $("#select_texture").append(v2)
+                    }
+                    if (k2 == "thinkness"){
+                        $("#select_thinkness").append(v2)
+                    }
+                    }
+                    });
+                });
+            },
+            error: function (data) {
+                console.log(data)
+            }
+        });
+
+
+    })
+
+    function isJson(d) {
+        try {
+            $.parseJSON(d)
+            return true
+        } catch (e) {
+            return false
+        }
+    }
+</script>

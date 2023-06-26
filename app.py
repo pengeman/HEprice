@@ -7,6 +7,7 @@ import re
 import service.HEservice
 from controllers.loginhome import login
 from entity.Collet import Collet
+from service import workhomeService
 from service.HEcompute import calHE
 from service.HEservice import getColletAll
 from service.login import login_check
@@ -65,7 +66,7 @@ def login():
         ## 验证用户名和密码
         isok = login_check(user, pwd)
         if isok:
-            print("app.py59 : " + str(isok))
+            print("登陆成功，开始工作 ")
             session['user'] = user
             return render_template(workhomepage)
         else:
@@ -101,6 +102,38 @@ def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-
             return HEprice_values
         else:
             return "换热器格式不正确,<br/>请参考：换热器型号BP200mhv-300-304-0.5-0.16Mpa-密封垫片-衬套材质-接管方式-1/2化工标准/供热标准<br/>BP100bhv-30-304-0.5-0.16Mpa-epdm-304-304-1"
+
+
+## 获得换热器的基本数据，用于在页面显示
+@app.route("/calculateHE/basedata")
+def HEbasedata():
+    # 获得sheet
+    sheetoption_ls = service.workhomeService.getsheet()
+    textureoption_ls = service.workhomeService.getTexture()
+    thinknessoption_ls = service.workhomeService.getThinkness()
+    pressureoption_ls = service.workhomeService.getPressure()
+    packageoption_ls = service.workhomeService.getPackage()
+    ## sheet option
+    sheetoptions = ""
+    textureoptions = ""
+    thinknessoptions = ""
+    for sheetoption in sheetoption_ls:
+        sheetoptions = sheetoptions + sheetoption
+    sheetoptions = "{\"sheet\":\"" + sheetoptions + "\"}"
+
+    for textureoption in textureoption_ls:
+        textureoptions = textureoptions + textureoption
+    textureoptions = "{\"texture\":\"" + textureoptions + "\"}"
+
+    for thinknessoption in thinknessoption_ls:
+        thinknessoptions = thinknessoptions + thinknessoption
+    thinknessoptions = "{\"thinkness\":\"" + thinknessoptions + "\"}"
+
+    r = list()
+    r.append(sheetoptions)
+    r.append(textureoptions)
+    r.append(thinknessoptions)
+    return r
 
 
 # 打开页面，设置后台数据

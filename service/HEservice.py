@@ -1,6 +1,20 @@
 ### 提供换热器的相关数据
 import DAO.HEdao
 
+# 获得sheet的全部数据
+def getSheetAll():
+    sheet_list = DAO.HEdao.getSheetall()
+    return  sheet_list
+
+def getTextureAll():
+    texture_list = DAO.HEdao.getTextureAll()
+    return texture_list
+
+def getThinknessAll():
+    return DAO.HEdao.getThinknessAll()
+
+def getPackageAll():
+    return DAO.HEdao.getPackageAll()
 
 # 获得底托的全部数据
 # return list(entity)
