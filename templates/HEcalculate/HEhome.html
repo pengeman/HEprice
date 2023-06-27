@@ -102,14 +102,25 @@
 <div id="result2"></div>
 <div id="result3"></div>
 <div id="result4"></div>
-<img src="static/masterpage.png">
+<button id="b_report">生成报价单</button>
+
 <footer id="id_footer">
     Footer Block<a href="/setup">setup</a>
 </footer>
 </body>
 </html>
 <script type="text/javascript">
-    $(document).ready(function () {
+    //BP100bhv-40-304-0.5-0.16Mpa-epdm-304-304-1
+    let sheet_0 = "";
+    let texture_0 = "";
+    let thinkness_0 = "";
+    let pressure_0 = "";
+    let epdm_0 = "";
+    let lining_0 = ""; // 衬套
+    let pipeline_0 = ""; // 接管
+    let flanger_0 = ""; // 法兰标准
+
+        $(document).ready(function () {
         $.ajax({
             type: "GET",          //以get方法提交数据给服务器
             url: "/calculateHE/basedata",               //请求数据，所有设备参数
@@ -124,6 +135,7 @@
                     $.each(jv, function (k2, v2) {
                         if (k2 == "sheet") {
                             $("#select_sheet").empty();
+                            $("#select_sheet").append("<option>选择板型</option>")
                             $("#select_sheet").append(v2);
                         }
                         if (k2 == "texture") {
@@ -134,15 +146,19 @@
                             $("#select_thinkness").empty();
                             $("#select_thinkness").append(v2)
                         }
-
                     });
+
                 });
             },
             error: function (data) {
                 console.log(data)
             }
         });
-
+        $("#select_sheet").change(function () {
+            sheet_0 = $(this).val();
+            console.log(sheet_0);
+            printHEtype();
+        });
 
     })
 
@@ -153,5 +169,9 @@
         } catch (e) {
             return false
         }
+    }
+    function printHEtype(){
+            HEtype = sheet_0 + "30" + texture_0 + thinkness_0 + pressure_0 + epdm_0 + lining_0 + pipeline_0 + flanger_0;
+            $("#HEtype").text(HEtype)
     }
 </script>
