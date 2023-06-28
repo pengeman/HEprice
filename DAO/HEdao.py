@@ -351,6 +351,8 @@ def getPipelineByType(sheet, texture):
             pipeline_entity.price = pipelines[3]
     return pipeline_entity
 
+def getPressureAll():  ## 承压数据
+    return None
 
 # 获得地托数据all
 def getColletAll():
@@ -470,3 +472,5 @@ if __name__ == '__main__':
     print('sheet1:' + b)
     b = sheetTypeShort2('BP100bhv')
     print('sheet2:' + b)
+
+

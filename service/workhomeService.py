@@ -40,13 +40,25 @@ def getThinkness():
 
 ## 承压
 def getPressure():
+    pressureall_ls = service.HEservice.getPressureAll()
     pressureoption_ls = list()
-    pressureoption_ls.append("<option id='1'>1.0Mpa</option>")
-    pressureoption_ls.append("<option id='2'>1.6Mpa</option>")
-    pressureoption_ls.append("<option id='3'>2.0Mpa</option>")
-    pressureoption_ls.append("<option id='4'>2.5Mpa</option>")
-    return pressureoption_ls
+    if pressureall_ls is None:
+        pressureoption_ls.append("<option id='1'>1.0Mpa</option>")
+        pressureoption_ls.append("<option id='2'>1.6Mpa</option>")
+        pressureoption_ls.append("<option id='3'>2.0Mpa</option>")
+        pressureoption_ls.append("<option id='4'>2.5Mpa</option>")
+        return pressureoption_ls
+    else:
+        for pressure_entity in pressureall_ls:
+            id = pressure_entity.id
+            pressure = pressure_entity.pressure
+            pressureoption_ls.append("<option id='" + str(id) + "'>" + str(pressure) + "</option>")
+        return pressureoption_ls
 
+## 橡胶垫片材质
+def getEpdm():
+    epdm_ls = service.HEservice.getEpdmAll()
+    epdm_ls.append("<option id='1'>epdm</option>")
 ## 包装
 def getPackage():
     packageoption_ls = list()

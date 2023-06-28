@@ -13,6 +13,26 @@ def getTextureAll():
 def getThinknessAll():
     return DAO.HEdao.getThinknessAll()
 
+## 得到承压的数据
+def getPressureAll():
+    return  DAO.HEdao.getPressureAll()
+
+## 得到垫片的数据
+def getEpdmAll():
+    return DAO.HEdao.getEpdmAll()
+
+## 得到衬套材质数据
+def getLiningAll():
+    return DAO.HEdao.getLiningAll()
+
+## 得到接管材质数据
+def getPipelingAll():
+    return  DAO.HEdao.getPipelineAll()
+
+## 得到法兰标准数据
+def getFlangeAll():
+    return DAO.HEdao.getFlangeSTDAll()
+
 def getPackageAll():
     return DAO.HEdao.getPackageAll()
 

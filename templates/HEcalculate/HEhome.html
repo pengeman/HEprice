@@ -75,11 +75,12 @@
     <option>BP150</option>
     <option>BP200</option>
 </select>
+<input id="area" type="text">
 <select id="select_texture">
     <option>304</option>
     <option>316</option>
     <option>Ni</option>
-    <option>Tai</option>
+    <option>Ti</option>
 </select>
 <select id="select_thinkness">
     <option>0.5</option>
@@ -89,6 +90,25 @@
     <option>10公斤</option>
     <option>16公斤</option>
     <option>25公斤</option>
+</select>
+<select id="select_epdm">
+    <option>epdm</option>
+    <option>nbr</option>
+</select>
+<select id="select_lining">
+    <option> 衬套材质 </option>
+    <option>304</option>
+    <option>316</option>
+</select>
+<select id="select_pipeline"> <!-- 接管材质-->
+    <option>无接管</option>
+    <option>304</option>
+    <option>316</option>
+</select>
+<select id="select_flange">
+    <option>法兰标准</option>
+    <option>1化工标准</option>
+    <option>2供热标准</option>
 </select>
 <select id="select_package">
     <option>木箱包装</option>
@@ -145,6 +165,21 @@
                         if (k2 == "thinkness") {
                             $("#select_thinkness").empty();
                             $("#select_thinkness").append(v2)
+                        }
+                        if (k2 == "pressure"){
+
+                        }
+                        if (k2 == "epdm"){
+
+                        }
+                        if (k2 == "lining"){
+
+                        }
+                        if (k2 == "pepiling"){
+
+                        }
+                        if (k2 == "flange"){
+
                         }
                     });
 
