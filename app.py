@@ -113,10 +113,13 @@ def HEbasedata():
     thinknessoption_ls = service.workhomeService.getThinkness()
     pressureoption_ls = service.workhomeService.getPressure()
     packageoption_ls = service.workhomeService.getPackage()
+    epdmoption_ls = service.workhomeService.getEpdm()
+
     ## sheet option
     sheetoptions = ""
     textureoptions = ""
     thinknessoptions = ""
+    epdmoptions = ""
     for sheetoption in sheetoption_ls:
         sheetoptions = sheetoptions + sheetoption
     sheetoptions = "{\"sheet\":\"" + sheetoptions + "\"}"
@@ -129,10 +132,15 @@ def HEbasedata():
         thinknessoptions = thinknessoptions + thinknessoption
     thinknessoptions = "{\"thinkness\":\"" + thinknessoptions + "\"}"
 
+    for epdmoption in epdmoption_ls:
+        epdmoptions = epdmoptions + epdmoption
+    epdmoptions = "{\"epdm\":\""+epdmoptions+"\"}"
+
     r = list()
     r.append(sheetoptions)
     r.append(textureoptions)
     r.append(thinknessoptions)
+    r.append(epdmoptions)
     return r
 
 

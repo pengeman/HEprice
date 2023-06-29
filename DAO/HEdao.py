@@ -8,9 +8,12 @@ from sqlalchemy import text
 
 from DAO.DB import createDB
 from entity.Collet import Collet
+from entity.EPDM import EPDM
 from entity.Flange1 import Flange1
+from entity.Lining import Lining
 from entity.Package import Package
 from entity.Pipeline import Pipeline
+from entity.Pressure import Pressure
 from entity.Sheet import Sheet
 from entity.SheetArea import SheetArea
 from entity.Splint import Splint
@@ -352,7 +355,31 @@ def getPipelineByType(sheet, texture):
     return pipeline_entity
 
 def getPressureAll():  ## 承压数据
-    return None
+    pressure_ls = list()
+    pressure = Pressure()
+    pressure_ls.append(pressure)
+    return pressure_ls
+
+
+## 得到垫片的材质
+def getEpdmAll():
+    epdm_ls = list()
+    epdm = EPDM()
+    epdm.id = 1
+    epdm.type = "EPDM"
+    epdm_ls.append(epdm)
+    epdm = EPDM()
+    epdm.id = 2
+    epdm.type = "NBR"
+    epdm_ls.append(epdm)
+    return epdm_ls
+
+## 得到衬套材质
+def getLiningAll():
+    lining_ls = list()
+    lining_entity = Lining()
+    lining_ls.append(lining_entity)
+    return lining_ls
 
 # 获得地托数据all
 def getColletAll():

@@ -58,7 +58,14 @@ def getPressure():
 ## 橡胶垫片材质
 def getEpdm():
     epdm_ls = service.HEservice.getEpdmAll()
-    epdm_ls.append("<option id='1'>epdm</option>")
+    epdmoption_ls = list()
+    for epdm_entity in epdm_ls:
+        id = epdm_entity.id
+        type = epdm_entity.type
+        epdm_ls.append("<option id='"+str(id)+"'>"+type+"</option>")
+    return epdmoption_ls
+
+
 ## 包装
 def getPackage():
     packageoption_ls = list()
