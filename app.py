@@ -107,13 +107,16 @@ def calculateHE():  # 计算换热器单价(换热器型号BP200mhv-300-304/0.5-
 ## 获得换热器的基本数据，用于在页面显示
 @app.route("/calculateHE/basedata")
 def HEbasedata():
-    # 获得sheet
+    # 获得基本数据
     sheetoption_ls = service.workhomeService.getsheet()
     textureoption_ls = service.workhomeService.getTexture()
     thinknessoption_ls = service.workhomeService.getThinkness()
     pressureoption_ls = service.workhomeService.getPressure()
     packageoption_ls = service.workhomeService.getPackage()
     epdmoption_ls = service.workhomeService.getEpdm()
+    liningoption_ls = service.workhomeService.getLining()
+    pipelineoption_ls = service.workhomeService.getPipeline()
+    flangeoption_ls = service.workhomeService.getFlange()  ## 法兰标准
 
     ## sheet option
     sheetoptions = ""

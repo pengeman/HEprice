@@ -94,26 +94,26 @@
 <select id="select_epdm">
     <option>epdm</option>
     <option>nbr</option>
-</select>
+</select>select_epdm
 <select id="select_lining">
     <option> 衬套材质 </option>
     <option>304</option>
     <option>316</option>
-</select>
+</select>select_lining
 <select id="select_pipeline"> <!-- 接管材质-->
     <option>无接管</option>
     <option>304</option>
     <option>316</option>
-</select>
+</select>select_pipeline
 <select id="select_flange">
     <option>法兰标准</option>
     <option>1化工标准</option>
     <option>2供热标准</option>
-</select>
+</select>select_flange
 <select id="select_package">
     <option>木箱包装</option>
     <option>底托</option>
-</select>
+</select>select_package
 <br>
 <button id="b_comp">计算价格</button>
 <hr/>
@@ -167,20 +167,24 @@
                             $("#select_thinkness").append(v2);
                         }
                         if (k2 == "pressure"){
-
+                            $("#select_pressure").empty()
+                            $("#select_pressure").append(v2)
                         }
                         if (k2 == "epdm"){
                             $("#select_epdm").empty();
                             $("#select_epdm").append(v2);
                         }
                         if (k2 == "lining"){
-
+                            $("#select_lining").empty()
+                            $("#select_lining").append(v2)
                         }
-                        if (k2 == "pepiling"){
-
+                        if (k2 == "pipeling"){
+                            $("#select_pipeline").empty()
+                            $("#select_pipeline").append(v2)
                         }
                         if (k2 == "flange"){
-
+                            $("#select_flange").empty()
+                            $("#select_flange").append(v2)
                         }
                     });
 
@@ -195,6 +199,18 @@
             console.log(sheet_0);
             printHEtype();
         });
+        $("#select_texture").change(function (){
+            texture_0 = $(this).val();
+            printHEtexture();
+        })
+        $("#select_thinkness").change(function (){
+            thinkness_0 = $(this).val();
+            printHEthinkness();
+        })
+        $("#select_pressure").change(function (){
+            pressure_0 = $(this).val();
+            printHEpressure();
+        })
 
     })
 

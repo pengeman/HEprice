@@ -10,6 +10,7 @@ from DAO.DB import createDB
 from entity.Collet import Collet
 from entity.EPDM import EPDM
 from entity.Flange1 import Flange1
+from entity.FlangeSTD import FlangeSTD
 from entity.Lining import Lining
 from entity.Package import Package
 from entity.Pipeline import Pipeline
@@ -378,8 +379,27 @@ def getEpdmAll():
 def getLiningAll():
     lining_ls = list()
     lining_entity = Lining()
+    lining_entity.id = 1
+    lining_entity.type = "304"
+    lining_ls.append(lining_entity)
+    lining_entity = Lining()
+    lining_entity.id = 2
+    lining_entity.type = "316"
     lining_ls.append(lining_entity)
     return lining_ls
+
+## 得到法兰标准
+def getFlangeSTDAll():
+    flange_ls = list()
+    flangestd = FlangeSTD()
+    flangestd.id = 0
+    flangestd.std = 1 ## 1化工标准
+    flange_ls.append(flangestd)
+    flangestd = FlangeSTD()
+    flangestd.id = 2
+    flangestd.std = 2 ## 2供热标准
+    flange_ls.append(flangestd)
+    return flange_ls
 
 # 获得地托数据all
 def getColletAll():

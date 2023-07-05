@@ -62,9 +62,46 @@ def getEpdm():
     for epdm_entity in epdm_ls:
         id = epdm_entity.id
         type = epdm_entity.type
-        epdm_ls.append("<option id='"+str(id)+"'>"+type+"</option>")
+        epdmoption_ls.append("<option id='"+str(id)+"'>"+type+"</option>")
     return epdmoption_ls
 
+## 衬套材质
+def getLining():
+    lining_ls = service.HEservice.getLiningAll()
+    liningoption_ls = list()
+    for lining_entity in lining_ls:
+        id = lining_entity.id
+        type = lining_entity.type
+        liningoption_ls.append("<option id='"+str(id)+"'>"+type+"</option>");
+    return liningoption_ls
+
+## 接管材质
+def getPipeline():
+    pipeline_ls = service.HEservice.getPipelingAll()
+    pipelineoption_ls = list()
+    ids = list()
+    textures = list()
+    for pipeline_entity in pipeline_ls:
+        id = pipeline_entity.id
+        type = pipeline_entity.type
+        texture = pipeline_entity.texture
+        c = textures.count(texture)
+        if c == 0:
+            ids.append(id)
+            textures.append(texture)
+        for i in range(len(ids)):
+            pipelineoption_ls.append("<option id='"+str(ids[i])+"'>"+textures[i]+"</option>")
+    return pipelineoption_ls
+
+## 获得法兰标准
+def getFlange():
+    flange_ls = service.HEservice.getFlangeAll()
+    flangeoption_ls = list()
+    for flange_entity in flange_ls:
+        id = flange_entity.id
+        std = flange_entity.std
+        flangeoption_ls.append("<option id='"+str(id)+"'>"+std+"</option>")
+    return flangeoption_ls
 
 ## 包装
 def getPackage():
@@ -73,3 +110,4 @@ def getPackage():
     for package_eneity in packageall_ls:
         package_eneity.id
         package_eneity.type
+
