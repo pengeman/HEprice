@@ -89,27 +89,27 @@
 <select id="select_pressure">
     <option>10公斤</option>
     <option>16公斤</option>
-    <option>25公斤</option>
+    <option>25d公斤</option>
 </select>
 <select id="select_epdm">
     <option>epdm</option>
-    <option>nbr</option>
-</select>select_epdm
+    <option>nbrs</option>
+</select>
 <select id="select_lining">
     <option> 衬套材质 </option>
     <option>304</option>
-    <option>316</option>
-</select>select_lining
+    <option>316s</option>
+</select>
 <select id="select_pipeline"> <!-- 接管材质-->
     <option>无接管</option>
     <option>304</option>
     <option>316</option>
-</select>select_pipeline
+</select>
 <select id="select_flange">
     <option>法兰标准</option>
     <option>1化工标准</option>
     <option>2供热标准</option>
-</select>select_flange
+</select>
 <select id="select_package">
     <option>木箱包装</option>
     <option>底托</option>
@@ -167,6 +167,7 @@
                             $("#select_thinkness").append(v2);
                         }
                         if (k2 == "pressure"){
+                            console.log(v2)
                             $("#select_pressure").empty()
                             $("#select_pressure").append(v2)
                         }
@@ -178,7 +179,7 @@
                             $("#select_lining").empty()
                             $("#select_lining").append(v2)
                         }
-                        if (k2 == "pipeling"){
+                        if (k2 == "pipeline"){
                             $("#select_pipeline").empty()
                             $("#select_pipeline").append(v2)
                         }

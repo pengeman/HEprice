@@ -359,7 +359,7 @@ def getPressureAll():  ## 承压数据
     pressure_ls = list()
     pressure = Pressure()
     pressure_ls.append(pressure)
-    return pressure_ls
+    return None
 
 
 ## 得到垫片的材质

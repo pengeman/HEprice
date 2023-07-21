@@ -123,6 +123,11 @@ def HEbasedata():
     textureoptions = ""
     thinknessoptions = ""
     epdmoptions = ""
+    liningoptions = ""
+    pressureoptions = ""
+    pipelineoptions = ""
+    flangeoptions = ""
+
     for sheetoption in sheetoption_ls:
         sheetoptions = sheetoptions + sheetoption
     sheetoptions = "{\"sheet\":\"" + sheetoptions + "\"}"
@@ -139,11 +144,31 @@ def HEbasedata():
         epdmoptions = epdmoptions + epdmoption
     epdmoptions = "{\"epdm\":\""+epdmoptions+"\"}"
 
+    for liningoption in liningoption_ls:
+        liningoptions = liningoptions + liningoption
+    liningoptions = "{\"lining\":\""+liningoptions+"\"}"
+
+    for pressureoption in pressureoption_ls:
+        pressureoptions = pressureoptions + pressureoption
+    pressureoptions = "{\"pressure\":\""+pressureoptions+"\"}"
+
+    for pipelineoption in pipelineoption_ls:
+        pipelineoptions = pipelineoptions + pipelineoption
+    pipelineoptions = "{\"pipeline\":\""+pipelineoptions+"\"}"
+
+    for flangeoption in flangeoption_ls:
+        flangeoptions = flangeoptions + flangeoption
+    flangeoptions = "{\"flange\":\""+flangeoptions+"\"}"
+
     r = list()
     r.append(sheetoptions)
     r.append(textureoptions)
     r.append(thinknessoptions)
     r.append(epdmoptions)
+    r.append(liningoptions)
+    r.append(pressureoptions)
+    r.append(pipelineoptions)
+    r.append(flangeoptions)
     return r
 
 
@@ -168,6 +193,9 @@ def setup():
         js = json.dumps(collet_newjson)
         print(js)
         return render_template("setup/collet.html", js=js)
+    if url == "flange1":
+        ## 设置法兰，化工标准
+
     return "你来干什么，你看到什么了？小心我灭口"
 
 

@@ -100,7 +100,11 @@ def getFlange():
     for flange_entity in flange_ls:
         id = flange_entity.id
         std = flange_entity.std
-        flangeoption_ls.append("<option id='"+str(id)+"'>"+std+"</option>")
+        if std == 1:
+            std = "1化工标准"
+        if std == 2:
+            std = "2供热标准"
+        flangeoption_ls.append("<option id='"+str(id)+"'>"+str(std)+"</option>")
     return flangeoption_ls
 
 ## 包装
