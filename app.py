@@ -193,8 +193,16 @@ def setup():
         js = json.dumps(collet_newjson)
         print(js)
         return render_template("setup/collet.html", js=js)
-    if url == "flange1":
-        ## 设置法兰，化工标准
+    if url == "sheet":
+        ## 设置板片
+        sheet_list = service.HEservice.getSheetAll()
+        sheet_newjson = []
+        for sheet_entity in sheet_list:
+            sheet_json = sheet_entity.jsonformat()
+            sheet_newjson.append(sheet_json)
+        js = json.dumps(sheet_newjson)
+        return render_template("setup/sheet.html", js=js)
+    if url == "sheetprice":
 
     return "你来干什么，你看到什么了？小心我灭口"
 
