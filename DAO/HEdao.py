@@ -401,6 +401,15 @@ def getFlangeSTDAll():
     flange_ls.append(flangestd)
     return flange_ls
 
+## 得到板片价格
+def getPriceAll():
+    sql = text("select aa.id,aa.type , c.texture, aa.thinkness_id, d.thinkness, aa.price as price "
+               "from (SELECT a.sheet_id,a.texture_id,a.thinkness_id, a.price, b.id,b.type FROM u_price a right join u_sheet b on a.sheet_id = b.id ) as aa "
+               "join u_texture c on aa.texture_id = c.id join u_thinkness d on aa.thinkness_id = d.id")
+    with app.app_context():
+
+
+
 # 获得地托数据all
 def getColletAll():
     sql = text("select id, type , price from u_collet")

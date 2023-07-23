@@ -33,6 +33,9 @@ def getPipelingAll():
 def getFlangeAll():
     return DAO.HEdao.getFlangeSTDAll()
 
+## 得到板片价格
+def getPriceAll():
+
 def getPackageAll():
     return DAO.HEdao.getPackageAll()
 
