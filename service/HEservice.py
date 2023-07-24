@@ -35,6 +35,7 @@ def getFlangeAll():
 
 ## 得到板片价格
 def getPriceAll():
+    return DAO.HEdao.getPriceAll()
 
 def getPackageAll():
     return DAO.HEdao.getPackageAll()

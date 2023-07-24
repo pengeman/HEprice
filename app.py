@@ -203,6 +203,23 @@ def setup():
         js = json.dumps(sheet_newjson)
         return render_template("setup/sheet.html", js=js)
     if url == "sheetprice":
+        ## 设置板片价格
+        sheetprice_list = service.HEservice.getPriceAll()
+        for price_content in sheetprice_list:
+            id = price_content["id"]
+            type = price_content["type"]
+            texture = price_content["texture"]
+            thickness = price_content["thickness"]
+            price = price_content["price"]
+            price_json = {
+                "id": id,
+                "type": type,
+                "texture": texture,
+                "thickness": thickness,
+                "price": price
+            }
+            js = json.dumps(price_json)
+            return render_template("setup/sheetprice", js=js)
 
     return "你来干什么，你看到什么了？小心我灭口"
 

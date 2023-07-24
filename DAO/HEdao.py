@@ -403,11 +403,22 @@ def getFlangeSTDAll():
 
 ## 得到板片价格
 def getPriceAll():
+    price_context = {}
     sql = text("select aa.id,aa.type , c.texture, aa.thinkness_id, d.thinkness, aa.price as price "
                "from (SELECT a.sheet_id,a.texture_id,a.thinkness_id, a.price, b.id,b.type FROM u_price a right join u_sheet b on a.sheet_id = b.id ) as aa "
                "join u_texture c on aa.texture_id = c.id join u_thinkness d on aa.thinkness_id = d.id")
     with app.app_context():
-
+        price_ls = list()
+        r = db.session.execute(sql)
+        for prices in r:
+            id = prices[0]
+            type = prices[1]
+            texture = prices[2]
+            thickness = prices[4]
+            price = prices[5]
+            price_context = dict(zip(["id","type","texture","thickness","price"],[id,type,texture,thickness,price]))
+            price_ls.append(price_context)
+        return price_context
 
 
 # 获得地托数据all
