@@ -10,7 +10,7 @@ def getsheet():
         id = sheet_entity.id
         type = sheet_entity.type
         pic = sheet_entity.pic
-        sheetoption_ls.append("<option id='"+str(id)+"'>" + type + "</option>")
+        sheetoption_ls.append("<option value='"+str(id)+"'>" + type + "</option>")
     return sheetoption_ls
 
 ## 材质
@@ -22,7 +22,7 @@ def getTexture():
         id = texture_entity.id
         texture = texture_entity.texture
         about = texture_entity.about
-        textoption_ls.append("<option id='" + str(id) + "'>" + texture + "</option>")
+        textoption_ls.append("<option value='" + str(id) + "'>" + texture + "</option>")
     return textoption_ls
 
 
@@ -35,7 +35,7 @@ def getThinkness():
         id = thinkness_entity.id
         thinkness = thinkness_entity.thinkness
         about = thinkness_entity.about
-        thinknessoption_ls.append("<option id='"+str(id)+"'>"+str(thinkness)+"</option>")
+        thinknessoption_ls.append("<option value='"+str(id)+"'>"+str(thinkness)+"</option>")
     return thinknessoption_ls
 
 ## 承压
@@ -43,16 +43,16 @@ def getPressure():
     pressureall_ls = service.HEservice.getPressureAll()
     pressureoption_ls = list()
     if pressureall_ls is None:
-        pressureoption_ls.append("<option id='1'>1.0Mpa</option>")
-        pressureoption_ls.append("<option id='2'>1.6Mpa</option>")
-        pressureoption_ls.append("<option id='3'>2.0Mpa</option>")
-        pressureoption_ls.append("<option id='4'>2.5Mpa</option>")
+        pressureoption_ls.append("<option value='1'>1.0Mpa</option>")
+        pressureoption_ls.append("<option value='2'>1.6Mpa</option>")
+        pressureoption_ls.append("<option value='3'>2.0Mpa</option>")
+        pressureoption_ls.append("<option value='4'>2.5Mpa</option>")
         return pressureoption_ls
     else:
         for pressure_entity in pressureall_ls:
             id = pressure_entity.id
             pressure = pressure_entity.pressure
-            pressureoption_ls.append("<option id='" + str(id) + "'>" + str(pressure) + "</option>")
+            pressureoption_ls.append("<option value='" + str(id) + "'>" + str(pressure) + "</option>")
         return pressureoption_ls
 
 ## 橡胶垫片材质
@@ -62,7 +62,7 @@ def getEpdm():
     for epdm_entity in epdm_ls:
         id = epdm_entity.id
         type = epdm_entity.type
-        epdmoption_ls.append("<option id='"+str(id)+"'>"+type+"</option>")
+        epdmoption_ls.append("<option value='"+str(id)+"'>"+type+"</option>")
     return epdmoption_ls
 
 ## 衬套材质
@@ -72,7 +72,7 @@ def getLining():
     for lining_entity in lining_ls:
         id = lining_entity.id
         type = lining_entity.type
-        liningoption_ls.append("<option id='"+str(id)+"'>"+type+"</option>");
+        liningoption_ls.append("<option value='"+str(id)+"'>"+type+"</option>");
     return liningoption_ls
 
 ## 接管材质
@@ -90,7 +90,7 @@ def getPipeline():
             ids.append(id)
             textures.append(texture)
         for i in range(len(ids)):
-            pipelineoption_ls.append("<option id='"+str(ids[i])+"'>"+textures[i]+"</option>")
+            pipelineoption_ls.append("<option value='"+str(ids[i])+"'>"+textures[i]+"</option>")
     return pipelineoption_ls
 
 ## 获得法兰标准
@@ -104,7 +104,7 @@ def getFlange():
             std = "1化工标准"
         if std == 2:
             std = "2供热标准"
-        flangeoption_ls.append("<option id='"+str(id)+"'>"+str(std)+"</option>")
+        flangeoption_ls.append("<option value='"+str(id)+"'>"+str(std)+"</option>")
     return flangeoption_ls
 
 ## 包装

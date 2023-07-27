@@ -418,7 +418,7 @@ def getPriceAll():
             price = prices[5]
             price_context = dict(zip(["id","type","texture","thickness","price"],[id,type,texture,thickness,price]))
             price_ls.append(price_context)
-        return price_context
+        return price_ls
 
 
 # 获得地托数据all

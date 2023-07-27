@@ -1,12 +1,7 @@
 import json
-
 from flask import Flask, redirect, url_for, render_template, request, session
-from regex import regex
 import re
-
 import service.HEservice
-from controllers.loginhome import login
-from entity.Collet import Collet
 from service import workhomeService
 from service.HEcompute import calHE
 from service.HEservice import getColletAll
@@ -142,23 +137,23 @@ def HEbasedata():
 
     for epdmoption in epdmoption_ls:
         epdmoptions = epdmoptions + epdmoption
-    epdmoptions = "{\"epdm\":\""+epdmoptions+"\"}"
+    epdmoptions = "{\"epdm\":\"" + epdmoptions + "\"}"
 
     for liningoption in liningoption_ls:
         liningoptions = liningoptions + liningoption
-    liningoptions = "{\"lining\":\""+liningoptions+"\"}"
+    liningoptions = "{\"lining\":\"" + liningoptions + "\"}"
 
     for pressureoption in pressureoption_ls:
         pressureoptions = pressureoptions + pressureoption
-    pressureoptions = "{\"pressure\":\""+pressureoptions+"\"}"
+    pressureoptions = "{\"pressure\":\"" + pressureoptions + "\"}"
 
     for pipelineoption in pipelineoption_ls:
         pipelineoptions = pipelineoptions + pipelineoption
-    pipelineoptions = "{\"pipeline\":\""+pipelineoptions+"\"}"
+    pipelineoptions = "{\"pipeline\":\"" + pipelineoptions + "\"}"
 
     for flangeoption in flangeoption_ls:
         flangeoptions = flangeoptions + flangeoption
-    flangeoptions = "{\"flange\":\""+flangeoptions+"\"}"
+    flangeoptions = "{\"flange\":\"" + flangeoptions + "\"}"
 
     r = list()
     r.append(sheetoptions)
@@ -205,6 +200,7 @@ def setup():
     if url == "sheetprice":
         ## 设置板片价格
         sheetprice_list = service.HEservice.getPriceAll()
+        price_newjson = list()
         for price_content in sheetprice_list:
             id = price_content["id"]
             type = price_content["type"]
@@ -212,25 +208,75 @@ def setup():
             thickness = price_content["thickness"]
             price = price_content["price"]
             price_json = {
-                "id": id,
+                "id": str(id),
                 "type": type,
                 "texture": texture,
-                "thickness": thickness,
-                "price": price
+                "thickness": str(thickness),
+                "price": str(price)
             }
-            js = json.dumps(price_json)
-            return render_template("setup/sheetprice", js=js)
-
+            price_newjson.append(price_json)
+            print(price_newjson)
+        js = json.dumps(price_newjson)
+        return render_template("setup/sheetprice.html", js=js)
     return "你来干什么，你看到什么了？小心我灭口"
+
+
+@app.route("/setup/sheet")
+def getsheets():
+    ## 得到板片信息
+    sheet_ls = list()
+    r = service.HEservice.getSheetAll()
+    for sheet_entity in r:
+        id = sheet_entity.id
+        type = sheet_entity.type
+        sheet_dict = {
+            "id": str(id), "type": type
+        }
+        sheet_ls.append(sheet_dict)
+    sheet_js = json.dumps(sheet_ls)
+    return sheet_js
+
+
+@app.route("/setup/texture")
+def gettexture():
+    ## 得到材质信息
+    texture_ls = list()
+    r = service.HEservice.getTextureAll()
+    for texture_entity in r:
+        id = texture_entity.id
+        texture = texture_entity.texture
+        texture_dict = {
+            "id": str(id), "texture": texture
+        }
+        texture_ls.append(texture_dict)
+    texture_js = json.dumps(texture_ls)
+    return texture_js
+
+
+@app.route("/setup/thickness")
+def getthickness():
+    ## 得到厚度信息
+    thickness_ls = list()
+    r = service.HEservice.getThinknessAll()
+    for thickness_entity in r:
+        id = thickness_entity.id
+        thickness = thickness_entity.thinkness
+        thickness_dict = {
+            "id": str(id), "thickness": str(thickness)
+        }
+        thickness_ls.append(thickness_dict)
+    thickness_js = json.dumps(thickness_ls)
+    return thickness_js
 
 
 @app.route("/setup/newcollet")
 def newcollet():
     type = request.args.get("type")
     price = request.args.get("price")
-    r = service.HEservice.newCollet(type,price) ## 如果执行成功返回1,否则返回0
+    r = service.HEservice.newCollet(type, price)  ## 如果执行成功返回1,否则返回0
     print(r)
     return str(r)
+
 
 @app.route("/setup/updatecollet")
 def updatecollet():
@@ -240,6 +286,15 @@ def updatecollet():
     r = service.HEservice.updateCollet(id, type, price)  ## 如果执行成功返回1,否则返回0
     print(r)
     return str(r)
+
+
+@app.route("/setup/newsheetprice")
+def newsheetprice():
+    type = request.args.get("type")
+    texture = request.args.get("texture")
+    thickness = request.args.get("thickness")
+    price = request.args.get("price")
+    service.HEservice.newsheetprice(type, texture, thickness, price)
 
 
 def validate_string(pattern, input_string):

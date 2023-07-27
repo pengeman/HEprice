@@ -43,177 +43,239 @@
 <div class="container">
 
 </div>
-    <input type="button" value="添加">
-    <div id="div_js" style="display:none">{{js}}</div>
-    <div id="sheet_js" style="display:none">{{sheet_js}}</div>
-    <div id="texture_js" style="display:none">{{texture_js}}</div>
-    <div id="thickness_js" style="display:none">{{thickness_js}}</div>
+<input type="button" value="添加">
+<div id="div_js" style="display:none">{{js}}</div>
+<div id="sheet_js" style="display:none">{{sheet_js}}</div>
+<div id="texture_js" style="display:none">{{texture_js}}</div>
+<div id="thickness_js" style="display:none">{{thickness_js}}</div>
+<br/>
+<table id="sheetprice_list" border="1"></table>
+<!--</div>-->
+<div class="modal hide">
+    <div id="dialogtitle">新增一个板片价格</div>
     <br/>
-    <table id="sheetprice_list" border="1"></table>
-    <!--</div>-->
-    <div class="modal hide">
-        <div id="dialogtitle">新增一个板片价格</div>
-        <br/>
-        <p><input id="id" name="id" type="text"></p>
-        <p>板型：<select id="type"><option value="1">1</option></select></p>
-        <p>材质：<select id="texture"><option value="2">2</option></select></p>
-        <p>厚度：<select id="thickness"><option>3</option></select></p>
-        <p>单价：<input id="price" name="port" type="text"></p>
-        <p><input id="cancel" type="button" value="取消">
-           <input id="confirm" type="button"  value="确定"></p>
-    </div>
-    <div class="shade hide"></div>
-    <script>
-        $(function () {
-            js1 = $("#div_js").text();
-            js2 = JSON.parse(js1);
-            tr = ["<tr><td>序号</td><td>板型</td><td>材质</td><td>厚度</td><td>操作</td></tr>"]
-            $.each(js2, function (index, jsonObject) {
-                tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['texture'] + "</td>" +
-                    "<td>" + jsonObject['thickness'] + "</td>" + "<td>" + jsonObject['price'] + "</td>" +
-                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['type']+"','"+jsonObject['price']+"')\"> " +
-                    "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
-            });
-
-            $('#sheetprice_list').html(tr)
-        });
-        //添加按钮
-        $('input[value="添加"]').click(function () {
-            $('.hide').removeClass('hide');
-            $('#dialogtitle').text("新增一个板片价格");
-            $('#confirm').val('确定');
-            confirm_b = 1;
-        });
-        //取消按钮
-        $('input[value="取消"]').click(function () {
-            $('input[type="text"]').val('');
-            $('.modal,.shade').addClass('hide');
-        });
-        // 确定按钮
-        $('input[value="确定"]').click(function () {
-            if (confirm_b == 2){ update(); return ;}
-            type = $("#type").val();
-            price = $("#price").val();
-            $.ajax({
-                type: "GET",          //以post方法提交数据给服务器
-                url: "/setup/newcollet",               //提交数据到User
-                dataType: "text",      //数据类型
-                data: {                        //传给服务器的数据
-                    "type": type,
-                    "price": price
-                },
-                success: function (data) {         //回调函数
-                    console.log("新增" + data);
-                    if (data == 1) {
-                        $('.modal,.shade').addClass('hide');
-                        let setupitem = "collet";
-                        $.ajax({
-                            type: "GET",          //以post方法提交数据给服务器
-                            url: "/setup",               //提交数据到User
-                            dataType: "text",      //数据类型
-                            data: {                        //传给服务器的数据
-                                "menu": setupitem
-                            },
-                            success: function (data) {         //回调函数
-                                $("#setup_content").html(data)
-                            },
-                            error: function (data) {
-
-                            }
-                        });
-                    }
-                },
-                error: function (data) {
-                    alert("新增底托失败")
-                }
-            });
-            $('input[type="text"]').val('');
-
+    <p><input id="id" name="id" type="text"></p>
+    <p>板型：<select id="type">
+        <option value="1">1</option>
+    </select></p>
+    <p>材质：<select id="texture">
+        <option value="2">2</option>
+    </select></p>
+    <p>厚度：<select id="thickness">
+        <option>3</option>
+    </select></p>
+    <p>单价：<input id="price" name="port" type="text"></p>
+    <p><input id="cancel" type="button" value="取消">
+        <input id="confirm" type="button" value="确定"></p>
+</div>
+<div class="shade hide"></div>
+<script>
+    $(function () {
+        js1 = $("#div_js").text();
+        js2 = JSON.parse(js1);
+        tr = ["<tr><td>序号</td><td>板型</td><td>材质</td><td>厚度</td><td>单价</td><td>操作</td></tr>"]
+        $.each(js2, function (index, jsonObject) {
+            tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['texture'] + "</td>" +
+                "<td>" + jsonObject['thickness'] + "</td>" + "<td>" + jsonObject['price'] + "</td>" +
+                "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id'] + ",'" + jsonObject['type'] + "','" + jsonObject['price'] + "')\"> " +
+                "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
         });
 
-        // 更新按钮对应的方法
-        function update() {
-            id = $("#id").val()
-            type = $("#type").val()
-            price = $("#price").val()
-            console.log(" function update : " + id + type + price);
-            $.ajax({
-                type: "GET",          //以post方法提交数据给服务器
-                url: "/setup/updatecollet",               //提交数据到User
-                dataType: "text",      //数据类型
-                data: {                        //传给服务器的数据
-                    "id": id,
-                    "type": type,
-                    "price": price
-                },
-                success: function (data) {         //回调函数
-                    console.log("更新" + data);
-                    if (data == 1) {
-                        $('.modal,.shade').addClass('hide');
-                        let setupitem = "collet";
-                        $.ajax({
-                            type: "GET",          //以post方法提交数据给服务器
-                            url: "/setup",               //提交数据到User
-                            dataType: "text",      //数据类型
-                            data: {                        //传给服务器的数据
-                                "menu": setupitem
-                            },
-                            success: function (data) {         //回调函数
-                                $("#setup_content").html(data)
-                            },
-                            error: function (data) {
-
-                            }
-                        });
-                    }
-                },
-                error: function (data) {
-                    alert("更新底托失败")
-                }
-            });
-            $('input[type="text"]').val('');
-
+        $('#sheetprice_list').html(tr)
+    });
+    //添加按钮
+    $('input[value="添加"]').click(function () {
+        $('.hide').removeClass('hide');
+        $('#dialogtitle').text("新增一个板片价格");
+        // 将数据type,texture,thickness 填写到介面中
+        writetype();
+        $('#confirm').val('确定');
+        confirm_b = 1;
+    });
+    //取消按钮
+    $('input[value="取消"]').click(function () {
+        $('input[type="text"]').val('');
+        $('.modal,.shade').addClass('hide');
+    });
+    // 确定按钮
+    $('input[value="确定"]').click(function () {
+        if (confirm_b == 2) {
+            update();
+            return;
         }
-        //编辑按钮
-        // $('input[value="编辑"]').click(function () {
-        //     $('.hide').removeClass('hide');
-        //     //获取点击前面标签
-        //     var tds = $(this).parent().prevAll();
-        //     tds.each(function () {
-        //         //获取target值
-        //         var tar_val = $(this).attr('target');
-        //         //获取当前td的内容
-        //         var con = $(this).text();
-        //         //根据target寻找modal中的对应框，并写入内容
-        //         $('.modal input[name="' + tar_val + '"]').val(con);
-        //     });
-        // });
+        type = $("#type").val();
+        texture = $("#texture").val();
+        thickness = $("thickness").val();
+        price = $("#price").val();
+        $.ajax({
+            type: "GET",          //以get方法提交数据给服务器
+            url: "setup/newsheetprice",               //提交数据到app,保存sheetprice数据
+            dataType: "text",      //数据类型
+            data: {                        //传给服务器的数据
+                "type": type,
+                "texture": texture,
+                "thickness": thickness,
+                "price": price
+            },
+            success: function (data) {         //回调函数
+                console.log("新增" + data);
+                if (data == 1) {
+                    $('.modal,.shade').addClass('hide');
+                    let setupitem = "sheetprice";
+                    $.ajax({
+                        type: "GET",          //以post方法提交数据给服务器
+                        url: "/setup",               //提交数据到User
+                        dataType: "text",      //数据类型
+                        data: {                        //传给服务器的数据
+                            "menu": setupitem
+                        },
+                        success: function (data) {         //回调函数
+                            $("#setup_content").html(data)
+                        },
+                        error: function (data) {
 
-        //删除按钮
-        function deleterow(id){
-            c = confirm("确认要删除这叫记录吗("+id+")" );
-            console.log(c);
-            if (c){
-                alert("程序还没有完成,再等等吧");
+                        }
+                    });
+                }
+            },
+            error: function (data) {
+                alert("新增底托失败")
             }
+        });
+        $('input[type="text"]').val('');
+
+    });
+
+    // 更新按钮对应的方法
+    function update() {
+        id = $("#id").val()
+        type = $("#type").val()
+        price = $("#price").val()
+        console.log(" function update : " + id + type + price);
+        $.ajax({
+            type: "GET",          //以post方法提交数据给服务器
+            url: "/setup/updatecollet",               //提交数据到User
+            dataType: "text",      //数据类型
+            data: {                        //传给服务器的数据
+                "id": id,
+                "type": type,
+                "price": price
+            },
+            success: function (data) {         //回调函数
+                console.log("更新" + data);
+                if (data == 1) {
+                    $('.modal,.shade').addClass('hide');
+                    let setupitem = "collet";
+                    $.ajax({
+                        type: "GET",          //以post方法提交数据给服务器
+                        url: "/setup",               //提交数据到User
+                        dataType: "text",      //数据类型
+                        data: {                        //传给服务器的数据
+                            "menu": setupitem
+                        },
+                        success: function (data) {         //回调函数
+                            $("#setup_content").html(data)
+                        },
+                        error: function (data) {
+
+                        }
+                    });
+                }
+            },
+            error: function (data) {
+                alert("更新底托失败")
+            }
+        });
+        $('input[type="text"]').val('');
+
+    }
+
+    //编辑按钮
+    // $('input[value="编辑"]').click(function () {
+    //     $('.hide').removeClass('hide');
+    //     //获取点击前面标签
+    //     var tds = $(this).parent().prevAll();
+    //     tds.each(function () {
+    //         //获取target值
+    //         var tar_val = $(this).attr('target');
+    //         //获取当前td的内容
+    //         var con = $(this).text();
+    //         //根据target寻找modal中的对应框，并写入内容
+    //         $('.modal input[name="' + tar_val + '"]').val(con);
+    //     });
+    // });
+
+    //删除按钮
+    function deleterow(id) {
+        c = confirm("确认要删除这叫记录吗(" + id + ")");
+        console.log(c);
+        if (c) {
+            alert("程序还没有完成,再等等吧");
         }
-        // $('input[value="删除"]').click(function () {
-        //     $(this).parent().parent().remove();
-        // });
-    </script>
-    <script type="text/javascript">
-        let confirm_b = 2; // 1表示新增，2表示更新
-        // 当编辑按钮被点击是触发
-        function modify(index, type, price){
-            confirm_b = 2;
-            console.log("modify button clicked for " + index + type + price);
-            $('#confirm').val('更新');
-            $('#dialogtitle').text("更新一个底托价格");
-            $('#id').val(index);
-            $("#type").val(type);
-            $("#price").val(price);
-            $('.hide').removeClass('hide');
-        }
-    </script>
+    }
+
+    // $('input[value="删除"]').click(function () {
+    //     $(this).parent().parent().remove();
+    // });
+</script>
+<script type="text/javascript">
+    let confirm_b = 2; // 1表示新增，2表示更新
+    // 当编辑按钮被点击是触发
+    function modify(index, type, price) {
+        confirm_b = 2;
+        console.log("modify button clicked for " + index + type + price);
+        $('#confirm').val('更新');
+        $('#dialogtitle').text("更新一个底托价格");
+        $('#id').val(index);
+        $("#type").val(type);
+        $("#price").val(price);
+        $('.hide').removeClass('hide');
+    }
+
+    function writetype() {
+        //填写板片信息，type,texture,thickness
+        $.ajax({
+            type: "GET",          //
+            url: "/setup/thickness",               //获得thickness的数据
+            dataType: "text",      //数据类型
+            success: function (data) {         //回调函数
+                js = JSON.parse(data);
+                s = "";
+                $.each(js, function (index, jsonObject) {
+                    id = jsonObject["id"];
+                    thickness = jsonObject["thickness"];
+                    s = s + "<option value='" + (id) + "'>" + thickness + "</option>";
+                });
+                $("#thickness").append(s);
+            },
+            error: function (data) {
+                alert("更新thickness失败")
+            }
+        });
+        $.getJSON('/setup/texture',
+            {},
+            function (data){
+                s = "";
+                $.each(data,function (index,jsonObject){
+                    id = jsonObject["id"];
+                    texture = jsonObject["texture"];
+                    s = s+"<option value='"+(id)+"'>"+texture+"</option>";
+                });
+                $("#texture").append(s);
+            });
+        $.getJSON('/setup/sheet',
+            {},
+            function (data){
+                s = "";
+                $.each(data,function (index,jsonObject){
+                    id = jsonObject["id"];
+                    type = jsonObject["type"];
+                    s = s+"<option value='"+(id)+"'>"+type+"</option>";
+                });
+                $("#type").append(s);
+            });
+    }
+</script>
+
 </body>
 </html>
