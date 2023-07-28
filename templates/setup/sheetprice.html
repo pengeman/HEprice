@@ -105,7 +105,7 @@
         }
         type = $("#type").val();
         texture = $("#texture").val();
-        thickness = $("thickness").val();
+        thickness = $("#thickness").val();
         price = $("#price").val();
         $.ajax({
             type: "GET",          //以get方法提交数据给服务器
@@ -119,27 +119,25 @@
             },
             success: function (data) {         //回调函数
                 console.log("新增" + data);
-                if (data == 1) {
-                    $('.modal,.shade').addClass('hide');
-                    let setupitem = "sheetprice";
-                    $.ajax({
-                        type: "GET",          //以post方法提交数据给服务器
-                        url: "/setup",               //提交数据到User
-                        dataType: "text",      //数据类型
-                        data: {                        //传给服务器的数据
-                            "menu": setupitem
-                        },
-                        success: function (data) {         //回调函数
-                            $("#setup_content").html(data)
-                        },
-                        error: function (data) {
-
-                        }
-                    });
-                }
+                $('.modal,.shade').addClass('hide');
+                let setupitem = "sheetprice";
+                $.ajax({
+                    type: "GET",          //以post方法提交数据给服务器
+                    url: "/setup",               //提交数据到User
+                    dataType: "text",      //数据类型
+                    data: {                        //传给服务器的数据
+                        "menu": setupitem
+                    },
+                    success: function (data) {         //回调函数
+                        $("#setup_content").html(data)
+                    },
+                    error: function (data) {
+                        alert("显示板片价格失误")
+                    }
+                });
             },
             error: function (data) {
-                alert("新增底托失败")
+                alert("新曾板片价格失败")
             }
         });
         $('input[type="text"]').val('');
@@ -254,23 +252,23 @@
         });
         $.getJSON('/setup/texture',
             {},
-            function (data){
+            function (data) {
                 s = "";
-                $.each(data,function (index,jsonObject){
+                $.each(data, function (index, jsonObject) {
                     id = jsonObject["id"];
                     texture = jsonObject["texture"];
-                    s = s+"<option value='"+(id)+"'>"+texture+"</option>";
+                    s = s + "<option value='" + (id) + "'>" + texture + "</option>";
                 });
                 $("#texture").append(s);
             });
         $.getJSON('/setup/sheet',
             {},
-            function (data){
+            function (data) {
                 s = "";
-                $.each(data,function (index,jsonObject){
+                $.each(data, function (index, jsonObject) {
                     id = jsonObject["id"];
                     type = jsonObject["type"];
-                    s = s+"<option value='"+(id)+"'>"+type+"</option>";
+                    s = s + "<option value='" + (id) + "'>" + type + "</option>";
                 });
                 $("#type").append(s);
             });

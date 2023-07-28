@@ -294,7 +294,12 @@ def newsheetprice():
     texture = request.args.get("texture")
     thickness = request.args.get("thickness")
     price = request.args.get("price")
-    service.HEservice.newsheetprice(type, texture, thickness, price)
+    r = service.HEservice.newsheetprice(type, texture, thickness, price)
+    if r == 1:
+        msg = "新增一条板片价格成功"
+    else:
+        msg = "新增一条板片价格失败"
+    return msg
 
 
 def validate_string(pattern, input_string):

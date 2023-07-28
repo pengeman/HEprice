@@ -67,3 +67,9 @@ def updateCollet(id, type, price):
         return 1
     else:
         return 0
+
+
+## 新增一个板片价格
+def newsheetprice(sheet, texture, thickness, price):
+    r = DAO.HEdao.newsheetprice(sheet,texture,thickness,price)
+    return r

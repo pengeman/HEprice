@@ -355,6 +355,7 @@ def getPipelineByType(sheet, texture):
             pipeline_entity.price = pipelines[3]
     return pipeline_entity
 
+
 def getPressureAll():  ## 承压数据
     pressure_ls = list()
     pressure = Pressure()
@@ -375,6 +376,7 @@ def getEpdmAll():
     epdm_ls.append(epdm)
     return epdm_ls
 
+
 ## 得到衬套材质
 def getLiningAll():
     lining_ls = list()
@@ -388,18 +390,20 @@ def getLiningAll():
     lining_ls.append(lining_entity)
     return lining_ls
 
+
 ## 得到法兰标准
 def getFlangeSTDAll():
     flange_ls = list()
     flangestd = FlangeSTD()
     flangestd.id = 0
-    flangestd.std = 1 ## 1化工标准
+    flangestd.std = 1  ## 1化工标准
     flange_ls.append(flangestd)
     flangestd = FlangeSTD()
     flangestd.id = 2
-    flangestd.std = 2 ## 2供热标准
+    flangestd.std = 2  ## 2供热标准
     flange_ls.append(flangestd)
     return flange_ls
+
 
 ## 得到板片价格
 def getPriceAll():
@@ -416,7 +420,8 @@ def getPriceAll():
             texture = prices[2]
             thickness = prices[4]
             price = prices[5]
-            price_context = dict(zip(["id","type","texture","thickness","price"],[id,type,texture,thickness,price]))
+            price_context = dict(
+                zip(["id", "type", "texture", "thickness", "price"], [id, type, texture, thickness, price]))
             price_ls.append(price_context)
         return price_ls
 
@@ -505,6 +510,26 @@ def updateCollet(id, type, price):
         return r1
 
 
+def newsheetprice(sheet, texture, thickness, price):
+    sql = text("insert into u_price(sheet_id,texture_id,thinkness_id,price) values(:sheet,:texture,:thickness,:price)")
+    para = [{"sheet": sheet, "texture": texture, "thickness": thickness, "price": price}]
+    with app.app_context():
+        db.session.execute(sql, para)
+        db.session.commit()
+        db.session.close();
+        return 1
+
+def updateshetprice(sheet,texture,thickness,price):
+    sql = text("update u_price set price=:price where sheet_id=:sheet and texture_id=:texture_id and thinkness_id=:thickness")
+    para = [{"price": price, "sheet": sheet, "texture": texture, "thickness": thickness}]
+    with app.app_context():
+        r = db.session.execute(sql, para)
+        r1 = r.rowcount
+        if r1 > 0:
+            db.session.commit()
+        db.session.close();
+        return r1
+
 if __name__ == '__main__':
     # sheet_e = getSheetall()
     # for sheet in sheet_e:
@@ -539,5 +564,3 @@ if __name__ == '__main__':
     print('sheet1:' + b)
     b = sheetTypeShort2('BP100bhv')
     print('sheet2:' + b)
-
-
