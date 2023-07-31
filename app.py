@@ -301,6 +301,18 @@ def newsheetprice():
         msg = "新增一条板片价格失败"
     return msg
 
+@app.route("/setup/updatesheetprice")
+def updatesheetprice():
+    type = request.args.get("type")
+    texture = request.args.get("texture")
+    thickness = request.args.get("thickness")
+    price = request.args.get("price")
+    r = service.HEservice.updatesheetprice(type,texture,thickness,price)
+    if r == 1:
+        msg = "更新板片价格成功"
+    else:
+        msg = "更新板片价格失败"
+    return msg
 
 def validate_string(pattern, input_string):
     # pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\d{1,3}-[304|316|tai|ni|mo|ha]-[0.5|0.6|0.7|0.8|1.0|1.2]-\d{0.1|0.16|0.2|0.25}Mpa-[epdm|nbr|fkm]-(304|316)衬套-[tan|304|316]接管-(1|2)$'

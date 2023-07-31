@@ -525,6 +525,7 @@ def updateshetprice(sheet,texture,thickness,price):
     with app.app_context():
         r = db.session.execute(sql, para)
         r1 = r.rowcount
+        print("r.rowcount:" + r1)
         if r1 > 0:
             db.session.commit()
         db.session.close();
