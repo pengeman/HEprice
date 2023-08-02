@@ -204,13 +204,17 @@ def setup():
         for price_content in sheetprice_list:
             id = price_content["id"]
             type = price_content["type"]
+            texture_id = price_content["texture_id"]
             texture = price_content["texture"]
+            thickness_id = price_content["thickness_id"]
             thickness = price_content["thickness"]
             price = price_content["price"]
             price_json = {
                 "id": str(id),
                 "type": type,
+                "texture_id": texture_id,
                 "texture": texture,
+                "thickness_id": thickness_id,
                 "thickness": str(thickness),
                 "price": str(price)
             }

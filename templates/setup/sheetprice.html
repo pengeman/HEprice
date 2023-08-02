@@ -77,10 +77,10 @@
         $.each(js2, function (index, jsonObject) {
             tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['texture'] + "</td>" +
                 "<td>" + jsonObject['thickness'] + "</td>" + "<td>" + jsonObject['price'] + "</td>" +
-                "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['type'] + "," + jsonObject['texture'] + ","+jsonObject['thickness']+"," + jsonObject['price'] + ")\"> " +
+                "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify('" + jsonObject['id']+"','"+jsonObject['type'] + "','" + jsonObject['texture_id']+"','"+ jsonObject['texture'] + "','"+ jsonObject['thickness_id']+"','"+jsonObject['thickness']+"'," + jsonObject['price'] + ")\"> " +
                 "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
         });
-
+        writetype();
         $('#sheetprice_list').html(tr)
     });
     //添加按钮
@@ -88,7 +88,7 @@
         $('.hide').removeClass('hide');
         $('#dialogtitle').text("新增一个板片价格");
         // 将数据type,texture,thickness 填写到介面中
-        writetype();
+        //writetype();
         $('#confirm').val('确定');
         confirm_b = 1;
     });
@@ -221,15 +221,18 @@
 <script type="text/javascript">
     let confirm_b = 2; // 1表示新增，2表示更新
     // 当编辑按钮被点击是触发
-    function modify(index, type, price) {
+    function modify(id, type, texture_id, texture, thickness_id, thickness, price) {
         confirm_b = 2;
-        console.log("modify button clicked for " + index + type + price);
+        console.log("modify button clicked for " + id+type+ texture_id+ texture+ thickness_id+ thickness+ price);
         $('#confirm').val('更新');
         $('#dialogtitle').text("更新一个板片价格");
-        $('#id').val(index);
-        $("#type").val(type);
+        // $('#id').val(index);
+        // $("#type").val(type);
+        // $("#t_sheet" ).val()
         $("#price").val(price);
-        $("#t_sheet" ).val()
+        $("#thickness").val(thickness_id);
+        $("#texture").val(texture_id);
+        $("#type").val(id);
         $('.hide').removeClass('hide');
     }
 
@@ -247,6 +250,7 @@
                     thickness = jsonObject["thickness"];
                     s = s + "<option value='" + (id) + "'>" + thickness + "</option>";
                 });
+                $("#thickness").empty();
                 $("#thickness").append(s);
             },
             error: function (data) {
@@ -262,6 +266,7 @@
                     texture = jsonObject["texture"];
                     s = s + "<option value='" + (id) + "'>" + texture + "</option>";
                 });
+                $("#texture").empty();
                 $("#texture").append(s);
             });
         $.getJSON('/setup/sheet',
@@ -273,6 +278,7 @@
                     type = jsonObject["type"];
                     s = s + "<option value='" + (id) + "'>" + type + "</option>";
                 });
+                $("#type").empty();
                 $("#type").append(s);
             });
     }
