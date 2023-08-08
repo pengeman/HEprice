@@ -78,7 +78,7 @@
             tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['texture'] + "</td>" +
                 "<td>" + jsonObject['thickness'] + "</td>" + "<td>" + jsonObject['price'] + "</td>" +
                 "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify('" + jsonObject['id']+"','"+jsonObject['type'] + "','" + jsonObject['texture_id']+"','"+ jsonObject['texture'] + "','"+ jsonObject['thickness_id']+"','"+jsonObject['thickness']+"'," + jsonObject['price'] + ")\"> " +
-                "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
+                "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id']+"','"+jsonObject['type'] + "','" + jsonObject['texture_id']+"','"+ jsonObject['texture'] + "','"+ jsonObject['thickness_id']+"','"+jsonObject['thickness']+"'," + jsonObject['price'] + ")\"></td></tr>");
         });
         writetype();
         $('#sheetprice_list').html(tr)
@@ -163,7 +163,7 @@
             },
             success: function (data) {         //回调函数
                 console.log("更新" + data);
-                if (data == 1) {
+                if (data == "更新板片价格成功") {
                     $('.modal,.shade').addClass('hide');
                     let setupitem = "sheetprice";
                     $.ajax({
@@ -206,7 +206,7 @@
     // });
 
     //删除按钮
-    function deleterow(id) {
+    function deleterow(sheetid,sheet,textureid,texture,thicknessid,thickness) {
         c = confirm("确认要删除这叫记录吗(" + id + ")");
         console.log(c);
         if (c) {

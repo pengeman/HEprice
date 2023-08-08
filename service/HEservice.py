@@ -78,4 +78,14 @@ def newsheetprice(sheet, texture, thickness, price):
 ## 更新一个板片价格
 def updatesheetprice(type, texture, thickness, price):
     r = DAO.HEdao.updateshetprice(type,texture,thickness,price)
-    return None
+    return r
+
+## 新曾一个板片数据
+def newsheet(type):
+    r = DAO.HEdao.newSheet(type)
+    return r
+
+
+def updatesheet(id, type):
+    r = DAO.HEdao.updatesheet(id,type)
+    return r

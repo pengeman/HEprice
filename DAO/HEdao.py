@@ -522,16 +522,39 @@ def newsheetprice(sheet, texture, thickness, price):
         return 1
 
 def updateshetprice(sheet,texture,thickness,price):
-    sql = text("update u_price set price=:price where sheet_id=:sheet and texture_id=:texture_id and thinkness_id=:thickness")
+    sql = text("update u_price set price=:price where sheet_id=:sheet and texture_id=:texture and thinkness_id=:thickness")
     para = [{"price": price, "sheet": sheet, "texture": texture, "thickness": thickness}]
     with app.app_context():
         r = db.session.execute(sql, para)
         r1 = r.rowcount
-        print("r.rowcount:" + r1)
+        print("r.rowcount:" + str(r1))
         if r1 > 0:
             db.session.commit()
         db.session.close();
         return r1
+
+
+def newSheet(type):
+    sql = text("insert into u_sheet(type) values(:type)")
+    para = [{"type": type}]
+    with app.app_context():
+        db.session.execute(sql,para)
+        r = db.session.execute(text("select @@identity as i"))
+        db.session.commit()
+        db.session.close()
+        return 1
+
+
+def updatesheet(id, type):
+    sql = text("update u_sheet set type=:type where id = :id")
+    para = [{"type": type, "id": id}]
+    with app.app_context():
+        r = db.session.execute(sql,para)
+        r1 = r.rowcount
+        if r1 > 0:
+            db.session.commit()
+        db.session.close()
+    return r1
 
 if __name__ == '__main__':
     # sheet_e = getSheetall()
@@ -567,3 +590,5 @@ if __name__ == '__main__':
     print('sheet1:' + b)
     b = sheetTypeShort2('BP100bhv')
     print('sheet2:' + b)
+
+
