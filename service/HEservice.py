@@ -46,6 +46,8 @@ def getColletAll():
     collet_ls = DAO.HEdao.getColletAll()
     return collet_ls
 
+def getSheetAreaAll():
+    return DAO.HEdao.getSheetAreaAll()
 
 # 新增一个底托价格
 # 参数：板型，单价
@@ -88,4 +90,9 @@ def newsheet(type):
 
 def updatesheet(id, type):
     r = DAO.HEdao.updatesheet(id,type)
+    return r
+
+
+def newsheetarea(sheet, area):
+    r = DAO.HEdao.newsheetArea(sheet, area)
     return r

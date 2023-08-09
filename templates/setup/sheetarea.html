@@ -4,7 +4,7 @@
 <head>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="UTF-8">
-    <title>板片设置</title>
+    <title>板片面积设置</title>
     <style>
         .hide {
             display: none;
@@ -45,13 +45,14 @@
     <input type="button" value="添加">
     <div id="div_js" style="display:none">{{js}}</div>
     <br/>
-    <table id="sheet_list" border="1"></table>
+    <table id="sheetarea_list" border="1"></table>
     <!--</div>-->
     <div class="modal hide">
-        <div id="dialogtitle">新增一个板片数据</div>
+        <div id="dialogtitle">新增一个板片面积数据</div>
         <br/>
         <p><input id="id" name="id" type="hidden"></p>
         <p>板型：<input id="type" name="sheettype" type="text"></p>
+        <p>面积：<input id="area" name="sheetarea" type="text"></p>
         <p><input id="cancel" type="button" value="取消">
             <input id="confirm" type="button"  value="确定" ></p>
     </div>
@@ -60,19 +61,19 @@
         $(function () {
             js1 = $("#div_js").text();
             js2 = JSON.parse(js1);
-            tr = ["<tr><td>序号</td><td>板型</td><td>说明</td><td>操作</td></tr>"]
+            tr = ["<tr><td>序号</td><td>板型</td><td>面积</td><td>操作</td></tr>"]
             $.each(js2, function (index, jsonObject) {
-                tr.push("<tr><td>" + index + "</td><td>" + jsonObject['type'] + "</td><td>" + jsonObject['pic'] + "</td>" +
-                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['type']+"')\"> " +
+                tr.push("<tr><td>" + index + "</td><td>" + jsonObject['sheet'] + "</td><td>" + jsonObject['area'] + "</td>" +
+                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['sheet']+","+jsonObject['area']+")\"> " +
                     "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
             });
 
-            $('#sheet_list').html(tr)
+            $('#sheetarea_list').html(tr)
         });
         //添加按钮
         $('input[value="添加"]').click(function () {
             $('.hide').removeClass('hide');
-            $('#dialogtitle').text("新增一个板片数据");
+            $('#dialogtitle').text("新增一个板片面积数据");
             $('#confirm').val('确定');
             confirm_b = 1;
         });
@@ -85,18 +86,20 @@
         $('input[value="确定"]').click(function () {
             if (confirm_b == 2){ update(); return ;}
             type = $("#type").val();
+            area = $("#area").val();
             $.ajax({
                 type: "GET",          //以post方法提交数据给服务器
-                url: "/setup/newsheet",               //提交数据到
+                url: "/setup/newsheetarea",               //提交数据到 新增板片面积数据
                 dataType: "text",      //数据类型
                 data: {                        //传给服务器的数据
-                    "type": type
+                    "type": type,
+                    "area": area
                 },
                 success: function (data) {         //回调函数
                     console.log("新增" + data);
-                    if (data == "新增一条板片数据成功") {
+                    if (data == "新增板片数据面积数据成功") {
                         $('.modal,.shade').addClass('hide');
-                        let setupitem = "sheet";
+                        let setupitem = "sheetarea";
                         $.ajax({
                             type: "GET",          //以post方法提交数据给服务器
                             url: "/setup",               //提交数据到User

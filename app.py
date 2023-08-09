@@ -222,6 +222,22 @@ def setup():
             print(price_newjson)
         js = json.dumps(price_newjson)
         return render_template("setup/sheetprice.html", js=js)
+    if url == "sheetarea":
+        ## 设置板片面积
+        sheetarea_list = service.HEservice.getSheetAreaAll()
+        sheetarea_newjson = list()
+        for sheetarea_entity in sheetarea_list:
+            id = sheetarea_entity.id
+            sheet = sheetarea_entity.sheet
+            area = sheetarea_entity.area
+            sheetarea_json = {
+                "id": str(id),
+                "sheet": sheet,
+                "area": str(area)
+            }
+            sheetarea_newjson.append(sheetarea_json)
+        js = json.dumps(sheetarea_newjson)
+        return render_template("setup/sheetarea.html", js=js)
     return "你来干什么，你看到什么了？小心我灭口"
 
 
@@ -340,6 +356,16 @@ def updatesheet():
         msg = "更新板片价数据败"
     return msg
 
+@app.route("/setup/newsheetarea")
+def newsheetarea():
+    sheet = request.args.get("type")
+    area = request.args.get("area")
+    r = service.HEservice.newsheetarea(sheet, area)
+    if r == 1:
+        msg = "新增板片数据面积数据成功"
+    else:
+        msg = "新增板片数据失败面积数据"
+    return msg
 
 def validate_string(pattern, input_string):
     # pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\d{1,3}-[304|316|tai|ni|mo|ha]-[0.5|0.6|0.7|0.8|1.0|1.2]-\d{0.1|0.16|0.2|0.25}Mpa-[epdm|nbr|fkm]-(304|316)衬套-[tan|304|316]接管-(1|2)$'

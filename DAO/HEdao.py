@@ -143,7 +143,7 @@ def getSplingbyType(type, pressure, classnum, lining):
 
 # 获得板型单板面积数据all
 def getSheetAreaAll():
-    sql = text("select id,sheet,arear from u_sheetarea")
+    sql = text("select id,sheet,area from u_sheetarea")
     with app.app_context():
         area_ls = list()
         area_list = db.session.execute(sql)
@@ -550,6 +550,18 @@ def updatesheet(id, type):
     para = [{"type": type, "id": id}]
     with app.app_context():
         r = db.session.execute(sql,para)
+        r1 = r.rowcount
+        if r1 > 0:
+            db.session.commit()
+        db.session.close()
+    return r1
+
+def newsheetArea(type, area):
+    sql = text("insert into u_sheetarea(sheet,area) values(:type,:area)")
+    para = [{"type": type, "area": area}]
+    with app.app_context():
+        r = db.session.execute(sql, para)
+        r1 = r.rowcount
         r1 = r.rowcount
         if r1 > 0:
             db.session.commit()
