@@ -367,6 +367,19 @@ def newsheetarea():
         msg = "新增板片数据失败面积数据"
     return msg
 
+@app.route("/setup/updatesheetarea")
+def updatesheetarea():
+    area = request.args.get("area")
+    type = request.args.get("type")
+    id = request.args.get("id")
+    r = service.HEservice.updatesheetarea(id, type,area)
+    if r == 1:
+        msg = "更新板片面积成功"
+    else:
+        msg = "更新板片面积失败"
+    return msg
+
+
 def validate_string(pattern, input_string):
     # pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\d{1,3}-[304|316|tai|ni|mo|ha]-[0.5|0.6|0.7|0.8|1.0|1.2]-\d{0.1|0.16|0.2|0.25}Mpa-[epdm|nbr|fkm]-(304|316)衬套-[tan|304|316]接管-(1|2)$'
 

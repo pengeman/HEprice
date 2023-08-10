@@ -96,3 +96,8 @@ def updatesheet(id, type):
 def newsheetarea(sheet, area):
     r = DAO.HEdao.newsheetArea(sheet, area)
     return r
+
+
+def updatesheetarea(id, type, area):
+    r = DAO.HEdao.updatesheetarea(id,type,area)
+    return r

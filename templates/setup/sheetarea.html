@@ -64,7 +64,7 @@
             tr = ["<tr><td>序号</td><td>板型</td><td>面积</td><td>操作</td></tr>"]
             $.each(js2, function (index, jsonObject) {
                 tr.push("<tr><td>" + index + "</td><td>" + jsonObject['sheet'] + "</td><td>" + jsonObject['area'] + "</td>" +
-                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['sheet']+","+jsonObject['area']+")\"> " +
+                    "<td><input type=\"button\" value=\"编辑\"  onclick=\"modify(" + jsonObject['id']+",'"+jsonObject['sheet']+"',"+jsonObject['area']+")\"> " +
                     "| <input type=\"button\" value=\"删除\" onclick=\"deleterow(" + jsonObject['id'] + ")\"></td></tr>");
             });
 
@@ -126,22 +126,24 @@
 
         // 更新按钮对应的方法
         function update() {
-            id = $("#id").val()
-            type = $("#type").val()
-            console.log(" function update : " + id + type);
+            id = $("#id").val();
+            type = $("#type").val();
+            area = $("#area").val();
+            console.log(" function update : " + id + type+area);
             $.ajax({
                 type: "GET",          //以post方法提交数据给服务器
-                url: "/setup/updatesheet",               //提交数据到User
+                url: "/setup/updatesheetarea",               //提交数据到User
                 dataType: "text",      //数据类型
                 data: {                        //传给服务器的数据
                     "id": id,
-                    "type": type
+                    "type": type,
+                    "area": area
                 },
                 success: function (data) {         //回调函数
                     console.log("更新" + data);
-                    if (data == "更新板片数据成功") {
+                    if (data == "更新板片面积成功") {
                         $('.modal,.shade').addClass('hide');
-                        let setupitem = "sheet";
+                        let setupitem = "sheetarea";
                         $.ajax({
                             type: "GET",          //以post方法提交数据给服务器
                             url: "/setup",               //提交数据到User
@@ -153,7 +155,7 @@
                                 $("#setup_content").html(data)
                             },
                             error: function (data) {
-
+                                console.log(data)
                             }
                         });
                     }
@@ -195,14 +197,14 @@
     <script type="text/javascript">
         let confirm_b = 2; // 1表示新增，2表示更新
         // 当编辑按钮被点击是触发
-        function modify(index, type, price){
+        function modify(id, type, area){
             confirm_b = 2;
-            console.log("modify button clicked for " + index + type + price);
+            console.log("modify button clicked for " + id + type + area);
             $('#confirm').val('更新');
-            $('#dialogtitle').text("更新一个底托价格");
-            $('#id').val(index);
+            $('#dialogtitle').text("更新板片面积");
+            $('#id').val(id);
             $("#type").val(type);
-            $("#price").val(price);
+            $("#area").val(area);
             $('.hide').removeClass('hide');
         }
     </script>

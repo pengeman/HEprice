@@ -568,6 +568,19 @@ def newsheetArea(type, area):
         db.session.close()
     return r1
 
+def updatesheetarea(id, type, area):
+    sql = text("update u_sheetarea set area = :area where id = :id and sheet=:type")
+    para = [{"id": id, "type": type, "area": area}]
+    with app.app_context():
+        r = db.session.execute(sql,para)
+        r1 = r.rowcount
+        if r1 > 0:
+            db.session.commit()
+        db.session.close()
+    return r1
+
+
+
 if __name__ == '__main__':
     # sheet_e = getSheetall()
     # for sheet in sheet_e:
