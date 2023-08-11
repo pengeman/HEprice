@@ -49,6 +49,11 @@ def getColletAll():
 def getSheetAreaAll():
     return DAO.HEdao.getSheetAreaAll()
 
+
+def getsplintAll():
+    return DAO.HEdao.getSplintAll()
+
+
 # 新增一个底托价格
 # 参数：板型，单价
 # 返回：0失败，1成功

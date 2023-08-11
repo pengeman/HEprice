@@ -579,6 +579,15 @@ def updatesheetarea(id, type, area):
         db.session.close()
     return r1
 
+def newsplint(sheet,pressure,classmin,classmax,lining,price):
+    sql = text("insert into u_splint(type, pressure, classmin, classmax, lining, price) values(:sheet,:pressure,:classmin,:classmax,:mining,:price)")
+    para = [{"type":sheet,"pressure":pressure,"classmin":classmin,"classmax":classmax,"lining":lining,"price":price}]
+    with app.app_context():
+        r = db.session.execute(sql, para)
+        r1 = r.rowcount
+        db.session.commit()
+        db.session.close()
+    return r1
 
 
 if __name__ == '__main__':

@@ -238,6 +238,31 @@ def setup():
             sheetarea_newjson.append(sheetarea_json)
         js = json.dumps(sheetarea_newjson)
         return render_template("setup/sheetarea.html", js=js)
+    if url == "splint":
+        ## 设置夹板数据
+        splint_list = service.HEservice.getsplintAll()
+        splint_newjson = list()
+        for splint_entity in splint_list:
+            id = splint_entity.id
+            type = splint_entity.type
+            classmin = splint_entity.classmin
+            classmax = splint_entity.classmax
+            pressure = splint_entity.pressure
+            lining = splint_entity.lining
+            price = splint_entity.price
+            splint_json = {
+                "id": str(id),
+                "pressure": str(pressure),
+                "classmin": str(classmin),
+                "classmax": str(classmax),
+                "lining": str(lining),
+                "price": str(price)
+            }
+            splint_newjson.append(splint_json)
+        js = json.dumps(splint_newjson)
+        return render_template("setup/splint.html", js = js)
+
+
     return "你来干什么，你看到什么了？小心我灭口"
 
 
@@ -379,6 +404,9 @@ def updatesheetarea():
         msg = "更新板片面积失败"
     return msg
 
+@app.route("/setup/newsplint")
+def newsplint():
+    return None
 
 def validate_string(pattern, input_string):
     # pattern = r'^BP(32|50|100|150|200|250|300|350|400|450|500|550)[bm]\d{1,3}-[304|316|tai|ni|mo|ha]-[0.5|0.6|0.7|0.8|1.0|1.2]-\d{0.1|0.16|0.2|0.25}Mpa-[epdm|nbr|fkm]-(304|316)衬套-[tan|304|316]接管-(1|2)$'
