@@ -1,18 +1,19 @@
 # 这行代码会把所有 import MySQLdb 的调用，重定向到 pymysql，从而避免你没有安装 MySQLdb 的错误。
 import pymysql
+
 pymysql.install_as_MySQLdb()
 
 import json
-from flask import Flask, redirect, url_for, render_template, request, session
+import logging.handlers
 import re
 
-import service.HEservice
+from flask import Flask, redirect, render_template, request, session, url_for
 
+import service.HEservice
 from service import workhomeService
 from service.HEcompute import calHE
 from service.HEservice import getColletAll
 from service.login import login_check
-import logging.handlers
 
 logger = logging.getLogger("my_loger")
 
@@ -426,4 +427,4 @@ def validate_string(pattern, input_string):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=9999)
