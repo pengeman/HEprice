@@ -1,3 +1,4 @@
+# 这行代码会把所有 import MySQLdb 的调用，重定向到 pymysql，从而避免你没有安装 MySQLdb 的错误。
 import pymysql
 pymysql.install_as_MySQLdb()
 
