@@ -1,9 +1,5 @@
-import logging
-import string
-
 ## 获得换热器各部件的信息，如果是单条记录返回entity,如果是多条记录，返回list(entity)
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 
 from DAO.DB import createDB

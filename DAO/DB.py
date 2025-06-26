@@ -14,7 +14,7 @@ from entity.Thinkness import Thinkness
 def createDB(n):
     app = n
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://peng:sa@127.0.0.1:3306/heat_exchanger'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://peng:peng@127.0.0.1:3306/heat_exchanger'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     db = SQLAlchemy(app)
