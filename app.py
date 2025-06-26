@@ -1,3 +1,6 @@
+import pymysql
+pymysql.install_as_MySQLdb()
+
 import json
 from flask import Flask, redirect, url_for, render_template, request, session
 import re
